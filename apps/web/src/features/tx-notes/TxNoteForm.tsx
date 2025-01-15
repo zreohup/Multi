@@ -6,11 +6,16 @@ import { TxNoteInput } from './TxNoteInput'
 export function TxNoteForm({
   isCreation,
   txDetails,
-  onSubmit,
+  onChange,
 }: {
   isCreation: boolean
   txDetails?: TransactionDetails
-  onSubmit: (note: string) => void
+  onChange: (note: string) => void
 }) {
-  return <TxCard>{isCreation ? <TxNoteInput onSubmit={onSubmit} /> : <TxNote txDetails={txDetails} />}</TxCard>
+  // @FIXME: update CGW types to include note
+  const note = (txDetails as TransactionDetails & { note: string | null })?.note
+
+  if (!isCreation && !note) return null
+
+  return <TxCard>{isCreation ? <TxNoteInput onChange={onChange} /> : <TxNote txDetails={txDetails} />}</TxCard>
 }
