@@ -62,6 +62,7 @@ function RootLayout() {
                       <Stack.Screen name="signers/[address]" options={{ headerShown: true, title: '' }} />
                       <Stack.Screen name="import-signers" options={{ headerShown: true, title: '' }} />
                       <Stack.Screen name="app-settings" options={{ headerShown: true, title: 'Settings' }} />
+                      <Stack.Screen name="notifications-opt-in" options={{ headerShown: true, title: '' }} />
                       <Stack.Screen name="+not-found" />
                     </Stack>
                   </SafeToastProvider>
