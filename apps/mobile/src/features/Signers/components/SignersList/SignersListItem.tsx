@@ -1,5 +1,4 @@
 import React from 'react'
-import { shortenAddress } from '@/src/utils/formatters'
 import { MenuView } from '@react-native-menu/menu'
 import { useSignersActions } from './hooks/useSignersActions'
 import { SafeFontIcon } from '@/src/components/SafeFontIcon'
@@ -35,7 +34,7 @@ function SignersListItem({ item, index, signersGroup }: SignersListItemProps) {
         borderBottomLeftRadius={isLastItem ? '$4' : undefined}
       >
         <SignersCard
-          name={item.name ?? shortenAddress(item.value)}
+          name={item.name as string}
           address={item.value as `0x${string}`}
           rightNode={
             <MenuView onPressAction={console.log} actions={actions}>

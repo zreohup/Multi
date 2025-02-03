@@ -8229,7 +8229,7 @@ __metadata:
     expo-dev-client: "npm:~5.0.5"
     expo-font: "npm:~13.0.3"
     expo-image: "npm:~2.0.3"
-    expo-linear-gradient: "npm:^14.0.1"
+    expo-linear-gradient: "npm:^14.0.2"
     expo-linking: "npm:~7.0.3"
     expo-router: "npm:~4.0.15"
     expo-splash-screen: "npm:^0.29.16"
@@ -8252,6 +8252,7 @@ __metadata:
     react-native-keychain: "npm:^9.2.2"
     react-native-mmkv: "npm:^3.1.0"
     react-native-pager-view: "npm:^6.5.1"
+    react-native-progress: "npm:^5.0.1"
     react-native-quick-crypto: "npm:^0.7.11"
     react-native-reanimated: "npm:^3.16.7"
     react-native-safe-area-context: "npm:4.12.0"
@@ -13391,7 +13392,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.22.0":
+"@typescript-eslint/parser@npm:8.22.0, @typescript-eslint/parser@npm:^8.22.0":
   version: 8.22.0
   resolution: "@typescript-eslint/parser@npm:8.22.0"
   dependencies:
@@ -20113,14 +20114,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-linear-gradient@npm:^14.0.1":
-  version: 14.0.1
-  resolution: "expo-linear-gradient@npm:14.0.1"
+"expo-linear-gradient@npm:^14.0.2":
+  version: 14.0.2
+  resolution: "expo-linear-gradient@npm:14.0.2"
   peerDependencies:
     expo: "*"
     react: "*"
     react-native: "*"
-  checksum: 10/d0ff7b10e20b35c09ab7d3f8e8ba205b4274813160bf3eec81c5d4b601985831cf87cb403081c5ed30cf20264245494d29576f8ea7879340f5241b58358136f3
+  checksum: 10/73471a435fa720137c5bb16ddc699c64181101db081cd4ff892b383e9f047db56039fd1235f3570dd2fccd099214230f98405963c9c8afc32891c43eabae2c60
   languageName: node
   linkType: hard
 
@@ -28915,6 +28916,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10/f56c3598a0e88fc66bdea806abacb0dd366bbd16a0c371a9a0c4dc21b2e53b020321bb896e1ae0f07c75caea16aaed292ae66c1a7546ade9c6d2a14aee8b9d63
+  languageName: node
+  linkType: hard
+
+"react-native-progress@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "react-native-progress@npm:5.0.1"
+  dependencies:
+    prop-types: "npm:^15.7.2"
+  peerDependencies:
+    react-native-svg: "*"
+  checksum: 10/902189578ce233bbc3cb3a85c13d4bcd439430e1a3da7bcf622e00ff6a2404155b22ce3c3350ccdb5b50952746b99f8522404a818531472250b60b75975a524c
   languageName: node
   linkType: hard
 
