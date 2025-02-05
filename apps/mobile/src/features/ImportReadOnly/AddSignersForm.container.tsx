@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/src/store/hooks'
 import { selectAllChainsIds } from '@/src/store/chains'
 import { useSafesGetOverviewForManyQuery } from '@safe-global/store/gateway/safes'
 import { addSafe } from '@/src/store/safesSlice'
-import { setActiveSafe } from '@/src/store/activeSafeSlice'
+import { selectActiveSafe, setActiveSafe } from '@/src/store/activeSafeSlice'
 import { Address } from '@/src/types/address'
 import { groupSigners } from '@/src/features/Signers/hooks/useSignersGroupService'
 import { selectSigners } from '@/src/store/signersSlice'
@@ -18,6 +18,7 @@ export const AddSignersFormContainer = () => {
   const dispatch = useAppDispatch()
   const chainIds = useAppSelector(selectAllChainsIds)
   const appSigners = useAppSelector(selectSigners)
+  const activeSafe = useAppSelector(selectActiveSafe)
   const { currentData, isFetching } = useSafesGetOverviewForManyQuery({
     safes: chainIds.map((chainId: string) => makeSafeId(chainId, params.safeAddress)),
     currency: 'usd',
@@ -39,6 +40,7 @@ export const AddSignersFormContainer = () => {
     if (!currentData) {
       return
     }
+    const hasActiveSafe = !!activeSafe
     dispatch(addSafe({ SafeInfo: currentData[0], chains: safeAvailableOnChains }))
     dispatch(
       setActiveSafe({
@@ -50,8 +52,12 @@ export const AddSignersFormContainer = () => {
     router.dismissAll()
     // closes first screen in stack
     router.back()
-    // closes the "my accounts" screen modal
-    router.back()
+    if (!hasActiveSafe) {
+      router.replace('/(tabs)')
+    } else {
+      // closes the "my accounts" screen modal
+      router.back()
+    }
   }
 
   return (
