@@ -20,6 +20,8 @@ appId: 'global.safe.mobileapp'
       visible: 'Reload'
     commands:
       - tapOn: 'Reload'
+- tapOn:
+    id: 'e2eTestOnboarding'
 - assertVisible:
     id: 'carousel-item-0'
 - swipe:

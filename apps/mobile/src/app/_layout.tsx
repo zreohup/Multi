@@ -17,6 +17,7 @@ import { install } from 'react-native-quick-crypto'
 import { getDefaultScreenOptions } from '@/src/navigation/hooks/utils'
 import { NavigationGuardHOC } from '@/src/navigation/NavigationGuardHOC'
 import { StatusBar } from 'expo-status-bar'
+import { TestCtrls } from '@/src/tests/e2e-maestro/components/TestCtrls'
 
 install()
 
@@ -38,6 +39,7 @@ function RootLayout() {
                 <SafeThemeProvider>
                   <SafeToastProvider>
                     <NavigationGuardHOC>
+                      <TestCtrls />
                       <Stack
                         screenOptions={({ navigation }) => ({
                           ...getDefaultScreenOptions(navigation.goBack),

@@ -14,7 +14,7 @@ import { router } from 'expo-router'
 const items = [
   {
     name: 'seed',
-    title: 'Import seed phrase or a private key',
+    title: 'Import private key',
     description: 'Enter a private key or a 12-24 word seed phrase.',
     icon: <SafeFontIcon name="wallet" size={16} />,
     Image: Seed,
@@ -55,6 +55,7 @@ function ImportSignersPage() {
 
         {items.map((item, index) => (
           <SafeCard
+            testID={item.name}
             onPress={item.onPress}
             key={`${item.name}-${index}`}
             title={item.title}

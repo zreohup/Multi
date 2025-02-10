@@ -1,7 +1,7 @@
 import React from 'react'
-import { ScrollView } from 'react-native'
-import { Button, View, YStack } from 'tamagui'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { KeyboardAvoidingView } from 'react-native'
+import { Button, getTokenValue, View, YStack, ScrollView } from 'tamagui'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useScrollableHeader } from '@/src/navigation/useScrollableHeader'
 import { NavBarTitle } from '@/src/components/Title'
 import { SectionTitle } from '@/src/components/Title'
@@ -12,15 +12,20 @@ import { SafeInput } from '@/src/components/SafeInput'
 import { useImportPrivateKey } from './hooks/useImportPrivateKey'
 
 export function ImportPrivateKey() {
+  const insets = useSafeAreaInsets()
   const { handlePrivateKeyChange, handleImport, onPrivateKeyPaste, wallet, privateKey, error } = useImportPrivateKey()
   const { handleScroll } = useScrollableHeader({
     children: <NavBarTitle paddingRight={5}>Import a private key</NavBarTitle>,
   })
 
   return (
-    <SafeAreaView edges={['bottom']} style={{ flex: 1 }}>
-      <View flex={1}>
-        <ScrollView onScroll={handleScroll}>
+    <View flex={1} paddingBottom={insets.bottom + getTokenValue('$4')}>
+      <KeyboardAvoidingView
+        behavior="padding"
+        style={{ flex: 1 }}
+        keyboardVerticalOffset={insets.bottom + insets.top + getTokenValue('$4')}
+      >
+        <ScrollView onScroll={handleScroll} flex={1}>
           <View marginTop="$2">
             <SectionTitle
               title="Import a private key"
@@ -60,9 +65,11 @@ export function ImportPrivateKey() {
         </ScrollView>
 
         <View paddingHorizontal={'$3'}>
-          <SafeButton onPress={handleImport}>Import signer</SafeButton>
+          <SafeButton onPress={handleImport} testID={'import-signer'}>
+            Import signer
+          </SafeButton>
         </View>
-      </View>
-    </SafeAreaView>
+      </KeyboardAvoidingView>
+    </View>
   )
 }

@@ -10,7 +10,7 @@ export type CarouselItem = {
 
 interface CarouselItemProps {
   item: CarouselItem
-  testID: string
+  testID?: string
 }
 
 export const CarouselItem = ({
