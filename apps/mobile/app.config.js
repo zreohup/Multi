@@ -32,7 +32,7 @@ export default {
       entitlements: {
         'aps-environment': 'production',
       },
-      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST ?? './GoogleService-Info.plist',
+      googleServicesFile: process.env.GOOGLE_SERVICES_PLIST,
     },
     android: {
       adaptiveIcon: {
@@ -41,7 +41,7 @@ export default {
         monochromeImage: './assets/images/monochrome-icon.png',
       },
       package: IS_DEV ? 'global.safe.mobileapp.dev' : 'global.safe.mobileapp',
-      googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? './google-services.json',
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
     },
     web: {
       bundler: 'metro',

@@ -61,6 +61,9 @@
     },
     "build-and-maestro-test": {
       "withoutCredentials": true,
+      "env": {
+        "RN_SRC_EXT": "e2e.ts,e2e.tsx"
+      },
       "config": "build-and-maestro-test.yml",
       "android": {
         "buildType": "apk",
@@ -68,7 +71,8 @@
       },
       "ios": {
         "simulator": true,
-        "image": "latest"
+        "image": "latest",
+        "resourceClass": "large"
       }
     }
   },
