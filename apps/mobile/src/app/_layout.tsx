@@ -16,6 +16,7 @@ import { OnboardingHeader } from '@/src/features/Onboarding/components/Onboardin
 import { install } from 'react-native-quick-crypto'
 import { getDefaultScreenOptions } from '@/src/navigation/hooks/utils'
 import { NavigationGuardHOC } from '@/src/navigation/NavigationGuardHOC'
+import { StatusBar } from 'expo-status-bar'
 
 install()
 
@@ -95,6 +96,7 @@ function RootLayout() {
                         />
                         <Stack.Screen name="+not-found" />
                       </Stack>
+                      <StatusBar />
                     </NavigationGuardHOC>
                   </SafeToastProvider>
                 </SafeThemeProvider>
