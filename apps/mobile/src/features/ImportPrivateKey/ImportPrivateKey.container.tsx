@@ -1,5 +1,5 @@
 import React from 'react'
-import { KeyboardAvoidingView } from 'react-native'
+import { KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { Button, getTokenValue, View, YStack, ScrollView } from 'tamagui'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { useScrollableHeader } from '@/src/navigation/useScrollableHeader'
@@ -22,7 +22,7 @@ export function ImportPrivateKey() {
     <View flex={1} paddingBottom={insets.bottom + getTokenValue('$4')}>
       <KeyboardAvoidingView
         behavior="padding"
-        style={{ flex: 1 }}
+        style={styles.flex1}
         keyboardVerticalOffset={insets.bottom + insets.top + getTokenValue('$4')}
       >
         <ScrollView onScroll={handleScroll} flex={1}>
@@ -65,7 +65,7 @@ export function ImportPrivateKey() {
         </ScrollView>
 
         <View paddingHorizontal={'$3'}>
-          <SafeButton onPress={handleImport} testID={'import-signer'}>
+          <SafeButton onPress={handleImport} testID={'import-signer-button'}>
             Import signer
           </SafeButton>
         </View>
@@ -73,3 +73,9 @@ export function ImportPrivateKey() {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  flex1: {
+    flex: 1,
+  },
+})

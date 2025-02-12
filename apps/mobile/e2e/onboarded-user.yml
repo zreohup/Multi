@@ -25,9 +25,9 @@ appId: global.safe.mobileapp
 - tapOn:
     id: 'opt-in-secondary-button'
 - assertVisible:
-    id: 'tabHome'
+    id: 'home-tab'
 - tapOn:
-    id: 'tabTransactions'
+    id: 'transactions-tab'
 - assertVisible:
     id: 'tx-history-list'
 - tapOn: 'Messages'
@@ -38,7 +38,7 @@ appId: global.safe.mobileapp
 - tapOn: ' Signers 3 '
 - assertVisible: 'Signers'
 - tapOn:
-    id: 'import-signer'
+    id: 'import-signer-button'
 - assertVisible: 'Import a signer'
 - tapOn:
     id: 'seed'
@@ -47,9 +47,9 @@ appId: global.safe.mobileapp
 - tapOn:
     point: '50%,51%'
 - assertVisible:
-    id: 'import-signer'
+    id: 'import-signer-button'
 - tapOn:
-    id: 'import-signer'
+    id: 'import-signer-button'
 - assertVisible:
     id: 'import-success'
 - tapOn:

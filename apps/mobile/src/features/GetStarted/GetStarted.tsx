@@ -42,7 +42,7 @@ export const GetStarted = () => {
           Join Account
         </SafeButton>
         <Link href={'/(import-accounts)'} asChild>
-          <SafeButton outlined icon={<SafeFontIcon name={'plus-outlined'} />} testID={'add-account'}>
+          <SafeButton outlined icon={<SafeFontIcon name={'plus-outlined'} />} testID={'add-account-button'}>
             Add account
           </SafeButton>
         </Link>

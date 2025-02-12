@@ -41,28 +41,28 @@ appId: 'global.safe.mobileapp'
 - assertVisible:
     id: 'get-started-screen'
 - tapOn:
-    id: 'add-account'
+    id: 'add-account-button'
 - assertVisible: 'Scan a QR code'
 - tapOn:
     id: 'enter-manually'
 - tapOn: 'Paste address...'
 - inputText: 'celo:0xCB57c3bC317d1905A435Dc75d7e4413E5B4Ecc97'
 - assertVisible:
-    id: 'continue'
+    id: 'continue-button'
 - assertVisible:
     id: 'success-icon'
 - assertVisible: 'Available on networks:'
 - tapOn:
     point: '50%,35%'
 - tapOn:
-    id: 'continue'
+    id: 'continue-button'
 - assertVisible:
     id: 'add-signers-form-screen'
 - assertVisible: 'Not imported signers'
 - assertVisible:
     id: 'signer-0x65F8236309e5A99Ff0d129d04E486EBCE20DC7B0'
 - tapOn:
-    id: 'continue'
+    id: 'continue-button'
 - tapOn:
     id: 'notifications-opt-in-screen'
 - assertVisible:
@@ -70,4 +70,4 @@ appId: 'global.safe.mobileapp'
 - tapOn:
     id: 'opt-in-secondary-button'
 - assertVisible:
-    id: 'tabHome'
+    id: 'home-tab'
