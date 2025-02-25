@@ -26,7 +26,7 @@ const expandAllBtn = '[data-testid="expande-all-btn"]'
 const collapseAllBtn = '[data-testid="collapse-all-btn"]'
 export const txRowTitle = '[data-testid="tx-row-title"]'
 const advancedDetails = '[data-testid="tx-advanced-details"]'
-const baseGas = '[data-testid="tx-bas-gas"]'
+const baseGas = '[data-testid="tx-base-gas"]'
 const requiredConfirmation = '[data-testid="required-confirmations"]'
 export const txDate = '[data-testid="tx-date"]'
 export const proposalStatus = '[data-testid="proposal-status"]'
@@ -78,7 +78,6 @@ const txStack = '[data-testid="tx-stack"]'
 const txOperation = '[data-testid="tx-operation"]'
 const nonceFld = '[data-testid="nonce-fld"]'
 
-
 const viewTransactionBtn = 'View transaction'
 const transactionDetailsTitle = 'Transaction details'
 const QueueLabel = 'needs to be executed first'
@@ -118,7 +117,7 @@ export const txNoteWarningMessage = 'The notes are publicly visible, do not shar
 export const recordedTxNote = 'Tx note one'
 
 export const tx_status = {
-  execution_needed: "Execution needed",
+  execution_needed: 'Execution needed',
 }
 export const filterTypes = {
   incoming: 'Incoming',
