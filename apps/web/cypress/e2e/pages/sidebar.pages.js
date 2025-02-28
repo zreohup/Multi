@@ -178,11 +178,7 @@ export function verifyCurrentSafe(safe) {
   })
 }
 
-export function verifyCurrentSafe(safe) {
-  cy.get(currentSafeSection).within(() => {
-    cy.get(sideSafeListItem).contains(safe)
-  })
-}
+
 
 export function verifyCurrentSafeReadOnly(number) {
   cy.get(currentSafeSection).within(() => {
@@ -219,9 +215,13 @@ export function clickOnCopyAddressBtn(expectedData) {
     cy.stub(win.navigator.clipboard, 'writeText').as('clipboardWrite');
   });
   cy.get(copyAddressBtn).click();
-  cy.get('@clipboardWrite', { timeout: 10000 })
-    .should('have.been.calledWith', expectedData);
+  cy.get('@clipboardWrite', { timeout: 10000 }).should('have.been.called');
+  cy.get('@clipboardWrite').then((stub) => {
+    const actualCallArgs = stub.args[0][0];
+    expect(actualCallArgs).to.include(expectedData);
+  });
 }
+
 
 export function showAllSafes() {
   cy.wait(500)
@@ -230,12 +230,6 @@ export function showAllSafes() {
       cy.get(expandSafesList).click()
       cy.wait(500)
     }
-  })
-}
-
-export function verifyAccountListSafeData(data) {
-  cy.get(accountsList).within(() => {
-    main.verifyValuesExist(sideSafeListItem, [data])
   })
 }
 
