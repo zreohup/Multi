@@ -7527,6 +7527,11 @@ __metadata:
     lint-staged: "npm:^15.2.10"
     msw: "npm:^2.7.0"
     prettier: "npm:^3.4.2"
+  dependenciesMeta:
+    cypress:
+      built: true
+    next:
+      built: true
   languageName: unknown
   linkType: soft
 
@@ -7670,7 +7675,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     mockdate: "npm:^3.0.5"
     msw: "npm:^2.7.0"
-    next: "npm:^15.1.2"
+    next: "patch:next@15.1.2#../../.yarn/patches/next-npm-15.1.2-24e7411703.patch"
     papaparse: "npm:^5.3.2"
     prettier: "npm:^3.3.3"
     qrcode.react: "npm:^3.1.0"
@@ -24202,7 +24207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:*, next@npm:^15.1.2":
+"next@npm:*, next@npm:15.1.2":
   version: 15.1.2
   resolution: "next@npm:15.1.2"
   dependencies:
@@ -24260,6 +24265,67 @@ __metadata:
   bin:
     next: dist/bin/next
   checksum: 10/174ed53c730876c83fc9d64364cf2e7c884ca0787ab772d7b7a6292d3c687fe54b83db3b5cb98eb63a3e3155e17b5a89b80ad09bfb9921878a541a6a2658a508
+  languageName: node
+  linkType: hard
+
+"next@patch:next@15.1.2#../../.yarn/patches/next-npm-15.1.2-24e7411703.patch::locator=%40safe-global%2Fweb%40workspace%3Aapps%2Fweb":
+  version: 15.1.2
+  resolution: "next@patch:next@npm%3A15.1.2#../../.yarn/patches/next-npm-15.1.2-24e7411703.patch::version=15.1.2&hash=f62d10&locator=%40safe-global%2Fweb%40workspace%3Aapps%2Fweb"
+  dependencies:
+    "@next/env": "npm:15.1.2"
+    "@next/swc-darwin-arm64": "npm:15.1.2"
+    "@next/swc-darwin-x64": "npm:15.1.2"
+    "@next/swc-linux-arm64-gnu": "npm:15.1.2"
+    "@next/swc-linux-arm64-musl": "npm:15.1.2"
+    "@next/swc-linux-x64-gnu": "npm:15.1.2"
+    "@next/swc-linux-x64-musl": "npm:15.1.2"
+    "@next/swc-win32-arm64-msvc": "npm:15.1.2"
+    "@next/swc-win32-x64-msvc": "npm:15.1.2"
+    "@swc/counter": "npm:0.1.3"
+    "@swc/helpers": "npm:0.5.15"
+    busboy: "npm:1.6.0"
+    caniuse-lite: "npm:^1.0.30001579"
+    postcss: "npm:8.4.31"
+    sharp: "npm:^0.33.5"
+    styled-jsx: "npm:5.1.6"
+  peerDependencies:
+    "@opentelemetry/api": ^1.1.0
+    "@playwright/test": ^1.41.2
+    babel-plugin-react-compiler: "*"
+    react: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+    react-dom: ^18.2.0 || 19.0.0-rc-de68d2f4-20241204 || ^19.0.0
+    sass: ^1.3.0
+  dependenciesMeta:
+    "@next/swc-darwin-arm64":
+      optional: true
+    "@next/swc-darwin-x64":
+      optional: true
+    "@next/swc-linux-arm64-gnu":
+      optional: true
+    "@next/swc-linux-arm64-musl":
+      optional: true
+    "@next/swc-linux-x64-gnu":
+      optional: true
+    "@next/swc-linux-x64-musl":
+      optional: true
+    "@next/swc-win32-arm64-msvc":
+      optional: true
+    "@next/swc-win32-x64-msvc":
+      optional: true
+    sharp:
+      optional: true
+  peerDependenciesMeta:
+    "@opentelemetry/api":
+      optional: true
+    "@playwright/test":
+      optional: true
+    babel-plugin-react-compiler:
+      optional: true
+    sass:
+      optional: true
+  bin:
+    next: dist/bin/next
+  checksum: 10/a0dd97b75d435cc539094231e8e064269e07df7cc65a2714bf19be0459e57d7d578303082bb543cdb5ea8c25ebee7003212eaeedaac1253336583e090a742161
   languageName: node
   linkType: hard
 
