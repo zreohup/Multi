@@ -31,8 +31,6 @@ import useIsSafeOwner from '@/hooks/useIsSafeOwner'
 import NonOwnerError from '@/components/tx/SignOrExecuteForm/NonOwnerError'
 import WalletRejectionError from '@/components/tx/SignOrExecuteForm/WalletRejectionError'
 import { useValidateTxData } from '@/hooks/useValidateTxData'
-import { useValidateTxPreview } from '@/hooks/useValidateTxPreview'
-import { type TransactionPreview } from '@safe-global/safe-gateway-typescript-sdk'
 
 export const ExecuteForm = ({
   safeTx,
@@ -46,7 +44,6 @@ export const ExecuteForm = ({
   isExecutionLoop,
   txActions,
   txSecurity,
-  txPreview,
 }: SignOrExecuteProps & {
   isOwner: ReturnType<typeof useIsSafeOwner>
   isExecutionLoop: ReturnType<typeof useIsExecutionLoop>
@@ -54,7 +51,6 @@ export const ExecuteForm = ({
   txSecurity: ReturnType<typeof useTxSecurityContext>
   isCreation?: boolean
   safeTx?: SafeTransaction
-  txPreview?: TransactionPreview
 }): ReactElement => {
   // Form state
   const [isSubmittable, setIsSubmittable] = useState<boolean>(true)
@@ -66,9 +62,6 @@ export const ExecuteForm = ({
     () => (validationResult !== undefined ? new Error(validationResult) : undefined),
     [validationResult],
   )
-  const validatePreviewError = useValidateTxPreview(txPreview, safeTx?.data)
-  const isInvalidPreview = Boolean(validatePreviewError)
-
   // Hooks
   const currentChain = useCurrentChain()
   const { executeTx } = txActions
@@ -144,8 +137,7 @@ export const ExecuteForm = ({
     cannotPropose ||
     (needsRiskConfirmation && !isRiskConfirmed) ||
     validationError !== undefined ||
-    validationLoading ||
-    isInvalidPreview
+    validationLoading
 
   return (
     <>
@@ -203,12 +195,8 @@ export const ExecuteForm = ({
           </Box>
         )}
 
-        {validationError !== undefined ? (
+        {validationError !== undefined && (
           <ErrorMessage error={validationError}>Error validating transaction data</ErrorMessage>
-        ) : (
-          validatePreviewError !== undefined && (
-            <ErrorMessage error={validatePreviewError}>Error validating transaction preview</ErrorMessage>
-          )
         )}
 
         <Divider className={commonCss.nestedDivider} sx={{ pt: 3 }} />

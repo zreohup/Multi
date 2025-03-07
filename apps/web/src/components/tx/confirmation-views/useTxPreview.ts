@@ -21,7 +21,7 @@ const useTxPreview = (
   const address = customSafeAddress ?? safeAddress
   const { operation = Operation.CALL, data = '', to, value } = safeTxData ?? {}
 
-  return useAsync(async () => {
+  return useAsync(() => {
     if (skip) return
     return getTxPreview(chainId, address, operation, data, to, value)
   }, [skip, chainId, address, operation, data, to, value])

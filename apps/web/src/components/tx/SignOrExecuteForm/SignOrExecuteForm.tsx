@@ -65,7 +65,6 @@ export const SignOrExecuteForm = ({
   isCreation?: boolean
   txDetails?: TransactionDetails
   txPreview?: TransactionPreview
-  txPreviewError?: Error
 }): ReactElement => {
   const [customOrigin, setCustomOrigin] = useState<string | undefined>(props.origin)
   const { transactionExecution } = useAppSelector(selectSettings)
@@ -179,9 +178,6 @@ export const SignOrExecuteForm = ({
     <>
       <TxCard>
         {props.children}
-        {props.txPreviewError && (
-          <ErrorMessage error={props.txPreviewError}>Error decoding the transaction</ErrorMessage>
-        )}
 
         <ConfirmationView
           txId={props.txId}
