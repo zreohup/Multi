@@ -297,9 +297,9 @@ export function clickOnContinueBtn() {
 
 export function checkLocalStorage() {
   clickOnContinueBtn().should(() => {
-    const storedItem = window.localStorage.getItem(constants.BROWSER_PERMISSIONS_KEY);
-    expect(storedItem).to.include('"feature":"camera","status":"granted"');
-    expect(storedItem).to.include('"feature":"microphone","status":"denied"');
+    const storedItem = window.localStorage.getItem(constants.BROWSER_PERMISSIONS_KEY)
+    expect(storedItem).to.include('"feature":"camera","status":"granted"')
+    expect(storedItem).to.include('"feature":"microphone","status":"denied"')
   })
 }
 
