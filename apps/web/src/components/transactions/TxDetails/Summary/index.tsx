@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import React, { useState } from 'react'
-import { Link, Box, Typography } from '@mui/material'
+import { Link, Box, Stack, Typography } from '@mui/material'
 import { generateDataRowValue, TxDataRow } from '@/components/transactions/TxDetails/Summary/TxDataRow'
 import { isCustomTxInfo, isMultisigDetailedExecutionInfo } from '@/utils/transaction-guards'
 import type { TransactionDetails } from '@safe-global/safe-gateway-typescript-sdk'
@@ -45,7 +45,7 @@ const Summary = ({
     to: txData?.to.value ?? ZERO_ADDRESS,
     data: txData?.hexData ?? '0x',
     value: txData?.value ?? BigInt(0).toString(),
-    operation: txData?.operation as number,
+    operation: (txData?.operation as number) ?? 0,
     baseGas: baseGas ?? BigInt(0).toString(),
     gasPrice: gasPrice ?? BigInt(0).toString(),
     gasToken: gasToken ?? ZERO_ADDRESS,
@@ -73,7 +73,7 @@ const Summary = ({
       )}
 
       {/* Advanced TxData */}
-      {isTxDetailsPreview && (
+      {txData && isTxDetailsPreview && (
         <Link
           data-testid="tx-advanced-details"
           className={css.buttonExpand}
@@ -85,8 +85,8 @@ const Summary = ({
         </Link>
       )}
 
-      {expanded && (
-        <Box mt={isTxDetailsPreview ? 2 : 0}>
+      {txData && expanded && (
+        <Stack mt={isTxDetailsPreview ? 2 : 0} gap={0.5}>
           {!isCustom && !hideDecodedData && (
             <>
               <DecodedData txData={txData} toInfo={txData?.to} />
@@ -109,8 +109,6 @@ const Summary = ({
           <TxDataRow datatestid="tx-raw-data" title="data:">
             {generateDataRowValue(safeTxData.data, 'rawData')}
           </TxDataRow>
-
-          <Box pt={2} />
 
           <TxDataRow datatestid="tx-operation" title="operation:">
             {`${safeTxData.operation} (${Operation[safeTxData.operation].toLowerCase()})`}
@@ -140,7 +138,7 @@ const Summary = ({
             {safeTxData.nonce}
           </TxDataRow>
 
-          {!!confirmations && <Box pt={2} />}
+          {!!confirmations && <Box pt={1} />}
 
           {confirmations?.map(({ signature }, index) => (
             <TxDataRow datatestid="tx-signature" title={`Signature ${index + 1}:`} key={`signature-${index}:`}>
@@ -154,7 +152,7 @@ const Summary = ({
             Transaction hashes
           </Typography>
           <SafeTxHashDataRow safeTxData={safeTxData} />
-        </Box>
+        </Stack>
       )}
     </>
   )
