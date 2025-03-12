@@ -72,7 +72,7 @@ const IndexingStatus = () => {
         </ExternalLink>
 
         <ExternalLink href={STATUS_PAGE} sx={{ color: 'text.secondary', transform: 'translateY(3px)' }}>
-          {''}
+          {' '}
         </ExternalLink>
       </Stack>
     </Tooltip>
