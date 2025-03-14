@@ -260,7 +260,7 @@ export function clickOnReviewOrderBtn() {
       }
       cy.wrap($button).click()
     })
-  cy.get(reviewTwapBtn).click()
+  cy.get(reviewTwapBtn).should('be.enabled').click()
 }
 
 export function placeTwapOrder() {
@@ -274,7 +274,7 @@ export function placeTwapOrder() {
       }
       cy.wrap($button).click()
     })
-  cy.contains(placeTwapOrderStrBtn).click()
+  cy.get('button').contains(placeTwapOrderStrBtn).should('be.enabled').click()
 }
 
 export function confirmPriceImpact() {
@@ -282,12 +282,11 @@ export function confirmPriceImpact() {
   cy.get(confirmPriceImpactInput)
     .should(() => {})
     .then(($input) => {
-      if (!$input.length) {
-        return
+      if ($input.length) {
+        cy.wrap($input).type('confirm')
+        cy.get(confirmPriceImpactBtn).should('be.enabled').click()
       }
-      cy.wrap($input).type('confirm')
     })
-  cy.get(confirmPriceImpactBtn).should('be.enabled').click()
 }
 
 export function placeLimitOrder() {
