@@ -42,8 +42,10 @@ describe('isMigrateL2SingletonCall', () => {
   it('should return false for null data', () => {
     expect(
       isMigrateL2SingletonCall({
-        hexData: null,
+        hexData: undefined,
         to: { value: safeMigrationAddress },
+        operation: 0,
+        trustedDelegateCallTarget: true,
       } as TransactionData),
     ).toBeFalsy()
   })

@@ -3,7 +3,7 @@ import { IPFS_HOSTS, IS_OFFICIAL_HOST, OFFICIAL_HOSTS } from '@/config/constants
 import packageJson from '../../package.json'
 import useAsync from './useAsync'
 
-const GITHUB_API_URL = 'https://api.github.com/repos/5afe/safe-wallet-ipfs/releases/tags/'
+const GITHUB_API_URL = 'https://api.github.com/repos/5afe/safe-wallet-ipfs/releases/tags'
 
 async function getGithubRelease(version: string) {
   const resp = await fetch(`${GITHUB_API_URL}/v${version}`, {

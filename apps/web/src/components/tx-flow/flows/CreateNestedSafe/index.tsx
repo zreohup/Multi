@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactElement } from 'react'
+import { useCallback, useMemo, useState, type ReactElement } from 'react'
 
 import NestedSafeIcon from '@/public/images/sidebar/nested-safes-icon.svg'
 import TxLayout, { type TxStep } from '@/components/tx-flow/common/TxLayout'
@@ -21,7 +21,7 @@ export function CreateNestedSafe(): ReactElement {
     assets: [],
   })
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     if (!predictedSafeAddress) {
       return
     }
@@ -32,7 +32,7 @@ export function CreateNestedSafe(): ReactElement {
         name: data.name,
       }),
     )
-  }
+  }, [dispatch, data.name, predictedSafeAddress, safe.chainId])
 
   const steps = useMemo<TxStep[]>(
     () => [
@@ -58,7 +58,7 @@ export function CreateNestedSafe(): ReactElement {
         content: <ConfirmTxDetails key={2} onSubmit={handleSubmit} />,
       },
     ],
-    [nextStep, data],
+    [nextStep, data, handleSubmit],
   )
 
   return (
