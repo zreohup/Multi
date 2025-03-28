@@ -1,7 +1,7 @@
 import NumberField from '@/components/common/NumberField'
 import { AutocompleteItem } from '@/components/tx-flow/flows/TokenTransfer/CreateTokenTransfer'
 import { safeFormatUnits, safeParseUnits } from '@safe-global/utils/utils/formatters'
-import { validateDecimalLength, validateLimitedAmount } from '@/utils/validation'
+import { validateDecimalLength, validateLimitedAmount } from '@safe-global/utils/utils/validation'
 import { Button, Divider, FormControl, InputLabel, MenuItem, TextField } from '@mui/material'
 import { type SafeBalanceResponse } from '@safe-global/safe-gateway-typescript-sdk'
 import classNames from 'classnames'

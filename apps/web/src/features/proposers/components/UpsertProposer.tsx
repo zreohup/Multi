@@ -14,7 +14,7 @@ import { useAppDispatch } from '@/store'
 import { useAddProposerMutation } from '@/store/api/gateway'
 import { showNotification } from '@/store/notificationsSlice'
 import { shortenAddress } from '@safe-global/utils/utils/formatters'
-import { addressIsNotCurrentSafe } from '@/utils/validation'
+import { addressIsNotCurrentSafe } from '@safe-global/utils/utils/validation'
 import { isHardwareWallet } from '@/utils/wallets'
 import { Close } from '@mui/icons-material'
 import {

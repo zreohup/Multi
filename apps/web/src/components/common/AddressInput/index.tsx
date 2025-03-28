@@ -12,7 +12,7 @@ import {
   Skeleton,
 } from '@mui/material'
 import { useFormContext, useWatch, type Validate, get } from 'react-hook-form'
-import { validatePrefixedAddress } from '@/utils/validation'
+import { validatePrefixedAddress } from '@safe-global/utils/utils/validation'
 import { useCurrentChain } from '@/hooks/useChains'
 import useNameResolver from './useNameResolver'
 import { FEATURES, hasFeature } from '@/utils/chains'
