@@ -4,7 +4,7 @@ import type { StakingTxDepositInfo } from '@safe-global/safe-gateway-typescript-
 import { type NativeStakingDepositConfirmationView } from '@safe-global/safe-gateway-typescript-sdk'
 import ConfirmationOrderHeader from '@/components/tx/ConfirmationOrder/ConfirmationOrderHeader'
 import { formatDurationFromMilliseconds, formatVisualAmount, maybePlural } from '@/utils/formatters'
-import { formatCurrency } from '@/utils/formatNumber'
+import { formatCurrency } from '@safe-global/utils/utils/formatNumber'
 import StakingStatus from '@/features/stake/components/StakingStatus'
 import { InfoTooltip } from '@/features/stake/components/InfoTooltip'
 import { BRAND_NAME } from '@/config/constants'

@@ -19,7 +19,7 @@ import useSafeAddress from '@/hooks/useSafeAddress'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useDarkMode } from '@/hooks/useDarkMode'
 import { useGetOwnGlobalCampaignRankQuery } from '@/store/api/safePass'
-import { formatAmount } from '@/utils/formatNumber'
+import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 
 const TOKEN_DECIMALS = 18
 

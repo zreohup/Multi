@@ -27,7 +27,7 @@ import type {
   GeneralAssetDiff,
   NativeDiff,
 } from '@/services/security/modules/BlockaidModule/types'
-import { formatAmount } from '@/utils/formatNumber'
+import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 
 const FungibleBalanceChange = ({ change, asset }: { asset: AssetDiff['asset']; change: Erc20Diff | NativeDiff }) => {
   const { balances } = useBalances()

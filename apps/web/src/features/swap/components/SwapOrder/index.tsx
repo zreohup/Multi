@@ -17,7 +17,7 @@ import { DataTable } from '@/components/common/Table/DataTable'
 import { compareAsc } from 'date-fns'
 import css from './styles.module.css'
 import { Typography } from '@mui/material'
-import { formatAmount } from '@/utils/formatNumber'
+import { formatAmount } from '@safe-global/utils/utils/formatNumber'
 import {
   getExecutionPrice,
   getLimitPrice,

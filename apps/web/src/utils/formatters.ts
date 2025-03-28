@@ -1,6 +1,6 @@
 import type { BigNumberish } from 'ethers'
 import { formatUnits, parseUnits } from 'ethers'
-import { formatAmount, formatAmountPrecise } from './formatNumber'
+import { formatAmount, formatAmountPrecise } from '@safe-global/utils/utils/formatNumber'
 import { formatDuration, intervalToDuration } from 'date-fns'
 
 const GWEI = 'gwei'
