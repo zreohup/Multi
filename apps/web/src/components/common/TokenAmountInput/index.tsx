@@ -10,7 +10,7 @@ import { get, useFormContext } from 'react-hook-form'
 import type { FieldArrayPath, FieldValues } from 'react-hook-form'
 import css from './styles.module.css'
 import { MultiTokenTransferFields, type MultiTokenTransferParams } from '@/components/tx-flow/flows/TokenTransfer'
-import { sameAddress } from '@/utils/addresses'
+import { sameAddress } from '@safe-global/utils/utils/addresses'
 
 export enum TokenAmountFields {
   tokenAddress = 'tokenAddress',

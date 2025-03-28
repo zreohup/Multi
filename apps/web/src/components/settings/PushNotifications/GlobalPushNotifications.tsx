@@ -23,7 +23,7 @@ import type { AllOwnedSafes } from '@safe-global/safe-gateway-typescript-sdk'
 import { type ChainInfo } from '@safe-global/safe-gateway-typescript-sdk'
 
 import EthHashInfo from '@/components/common/EthHashInfo'
-import { sameAddress } from '@/utils/addresses'
+import { sameAddress } from '@safe-global/utils/utils/addresses'
 import useChains from '@/hooks/useChains'
 import { useAppSelector } from '@/store'
 import { useNotificationPreferences } from './hooks/useNotificationPreferences'

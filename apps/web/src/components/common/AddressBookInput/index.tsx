@@ -10,7 +10,7 @@ import EntryDialog from '@/components/address-book/EntryDialog'
 import css from './styles.module.css'
 import inputCss from '@/styles/inputs.module.css'
 import { isValidAddress } from '@/utils/validation'
-import { sameAddress } from '@/utils/addresses'
+import { sameAddress } from '@safe-global/utils/utils/addresses'
 
 const abFilterOptions = createFilterOptions({
   stringify: (option: { label: string; name: string }) => option.name + ' ' + option.label,

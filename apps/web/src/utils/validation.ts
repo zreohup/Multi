@@ -1,4 +1,4 @@
-import { parsePrefixedAddress, sameAddress, isChecksummedAddress } from './addresses'
+import { parsePrefixedAddress, sameAddress, isChecksummedAddress } from '@safe-global/utils/utils/addresses'
 import { safeFormatUnits, safeParseUnits } from './formatters'
 
 export const validateAddress = (address: string) => {

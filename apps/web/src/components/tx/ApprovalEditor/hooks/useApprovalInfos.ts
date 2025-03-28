@@ -1,7 +1,7 @@
 import useAsync from '@/hooks/useAsync'
 import useBalances from '@/hooks/useBalances'
 import { type Approval, ApprovalModule } from '@/services/security/modules/ApprovalModule'
-import { sameAddress } from '@/utils/addresses'
+import { sameAddress } from '@safe-global/utils/utils/addresses'
 import {
   getERC20TokenInfoOnChain,
   getErc721Symbol,
