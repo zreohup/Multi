@@ -28,7 +28,7 @@ import type { RecoverAccountFlowProps } from '.'
 import type { AddressEx } from '@safe-global/safe-gateway-typescript-sdk'
 
 import commonCss from '@/components/tx-flow/common/styles.module.css'
-import { maybePlural } from '@/utils/formatters'
+import { maybePlural } from '@safe-global/utils/utils/formatters'
 
 export function _isSameSetup({
   oldOwners,

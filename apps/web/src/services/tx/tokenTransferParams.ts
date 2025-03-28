@@ -1,6 +1,6 @@
 import type { MetaTransactionData } from '@safe-global/safe-core-sdk-types'
 import { ConfirmationViewTypes, type BaselineConfirmationView } from '@safe-global/safe-gateway-typescript-sdk'
-import { safeParseUnits } from '@/utils/formatters'
+import { safeParseUnits } from '@safe-global/utils/utils/formatters'
 import { Interface } from 'ethers'
 import { sameAddress } from '@safe-global/utils/utils/addresses'
 

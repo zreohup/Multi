@@ -40,7 +40,7 @@ import css from './styles.module.css'
 import useAllOwnedSafes from '@/features/myAccounts/hooks/useAllOwnedSafes'
 import useWallet from '@/hooks/wallets/useWallet'
 import { selectAllAddedSafes, type AddedSafesState } from '@/store/addedSafesSlice'
-import { maybePlural } from '@/utils/formatters'
+import { maybePlural } from '@safe-global/utils/utils/formatters'
 import { useNotificationsRenewal } from './hooks/useNotificationsRenewal'
 
 // UI logic

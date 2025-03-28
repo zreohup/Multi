@@ -1,5 +1,5 @@
 import { parsePrefixedAddress, sameAddress, isChecksummedAddress } from '@safe-global/utils/utils/addresses'
-import { safeFormatUnits, safeParseUnits } from './formatters'
+import { safeFormatUnits, safeParseUnits } from '@safe-global/utils/utils/formatters'
 
 export const validateAddress = (address: string) => {
   const ADDRESS_RE = /^0x[0-9a-f]{40}$/i

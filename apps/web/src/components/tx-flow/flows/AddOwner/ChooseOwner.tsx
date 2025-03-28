@@ -27,7 +27,7 @@ import InfoIcon from '@/public/images/notifications/info.svg'
 import commonCss from '@/components/tx-flow/common/styles.module.css'
 import { TOOLTIP_TITLES } from '@/components/tx-flow/common/constants'
 import EthHashInfo from '@/components/common/EthHashInfo'
-import { maybePlural } from '@/utils/formatters'
+import { maybePlural } from '@safe-global/utils/utils/formatters'
 
 type FormData = Pick<AddOwnerFlowProps | ReplaceOwnerFlowProps, 'newOwner' | 'threshold'>
 

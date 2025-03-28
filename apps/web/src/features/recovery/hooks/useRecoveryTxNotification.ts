@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { formatError } from '@/utils/formatters'
+import { formatError } from '@safe-global/utils/utils/formatters'
 import { showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch } from '@/store'
 import useSafeAddress from '../../../hooks/useSafeAddress'

@@ -13,7 +13,7 @@ import { type SafeTransaction } from '@safe-global/safe-core-sdk-types'
 import { type EIP712TypedData, type TokenInfo, TokenType } from '@safe-global/safe-gateway-typescript-sdk'
 import { useMemo } from 'react'
 import { PSEUDO_APPROVAL_VALUES } from '../utils/approvals'
-import { safeFormatUnits } from '@/utils/formatters'
+import { safeFormatUnits } from '@safe-global/utils/utils/formatters'
 
 export type ApprovalInfo = {
   tokenInfo: (Omit<TokenInfo, 'logoUri' | 'name'> & { logoUri?: string }) | undefined

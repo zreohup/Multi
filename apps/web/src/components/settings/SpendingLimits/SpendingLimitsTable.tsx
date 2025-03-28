@@ -1,6 +1,6 @@
 import EnhancedTable from '@/components/common/EnhancedTable'
 import DeleteIcon from '@/public/images/common/delete.svg'
-import { safeFormatUnits } from '@/utils/formatters'
+import { safeFormatUnits } from '@safe-global/utils/utils/formatters'
 import { Box, IconButton, Skeleton, SvgIcon, Typography } from '@mui/material'
 import { relativeTime } from '@safe-global/utils/utils/date'
 import EthHashInfo from '@/components/common/EthHashInfo'

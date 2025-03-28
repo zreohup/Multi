@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react'
-import { formatError } from '@/utils/formatters'
+import { formatError } from '@safe-global/utils/utils/formatters'
 import { selectNotifications, showNotification } from '@/store/notificationsSlice'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { TxEvent, txSubscribe } from '@/services/tx/txEvents'

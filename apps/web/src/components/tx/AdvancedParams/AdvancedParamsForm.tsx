@@ -1,7 +1,7 @@
 import { type SyntheticEvent } from 'react'
 import { Button, DialogActions, FormControl, Grid, Typography, DialogContent } from '@mui/material'
 import { FormProvider, useForm } from 'react-hook-form'
-import { safeFormatUnits, safeParseUnits } from '@/utils/formatters'
+import { safeFormatUnits, safeParseUnits } from '@safe-global/utils/utils/formatters'
 import { FLOAT_REGEX } from '@/utils/validation'
 import ModalDialog from '@/components/common/ModalDialog'
 import { AdvancedField, type AdvancedParameters } from './types'

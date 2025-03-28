@@ -4,7 +4,7 @@ import { SafeAppFeatures } from '@safe-global/safe-gateway-typescript-sdk'
 import type { SafeAppData } from '@safe-global/safe-gateway-typescript-sdk'
 import type { BaseTransaction, ChainInfo } from '@safe-global/safe-apps-sdk'
 
-import { formatVisualAmount } from '@/utils/formatters'
+import { formatVisualAmount } from '@safe-global/utils/utils/formatters'
 import { validateAddress } from '@/utils/validation'
 import type { SafeAppDataWithPermissions } from './types'
 import { SafeAppsTag } from '@/config/constants'
