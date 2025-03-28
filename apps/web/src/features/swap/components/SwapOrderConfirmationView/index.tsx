@@ -1,5 +1,5 @@
 import OrderId from '@/features/swap/components/OrderId'
-import { formatDateTime, formatTimeInWords, getPeriod } from '@/utils/date'
+import { formatDateTime, formatTimeInWords, getPeriod } from '@safe-global/utils/utils/date'
 import { Fragment, type ReactElement } from 'react'
 import { DataRow } from '@/components/common/Table/DataRow'
 import { DataTable } from '@/components/common/Table/DataTable'
