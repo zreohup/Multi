@@ -69,6 +69,7 @@ export enum SafeAppsTag {
   SAFE_GOVERNANCE_APP = 'safe-governance-app',
   ONRAMP = 'onramp',
   RECOVERY_SYGNUM = 'recovery-sygnum',
+  SWAP_FALLBACK = 'swap-fallback',
 }
 
 // Safe Apps names
