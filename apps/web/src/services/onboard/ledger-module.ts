@@ -1,4 +1,6 @@
 import type { DeviceActionState } from '@ledgerhq/device-management-kit'
+import { makeError } from 'ethers'
+import type { DmkError, ExecuteDeviceActionReturnType } from '@ledgerhq/device-management-kit'
 import type {
   GetAddressDAOutput,
   SignPersonalMessageDAOutput,
@@ -8,6 +10,7 @@ import type {
 } from '@ledgerhq/device-signer-kit-ethereum'
 import type { Chain, WalletInit, WalletInterface } from '@web3-onboard/common'
 import type { Account, Asset, BasePath, DerivationPath, ScanAccountsOptions } from '@web3-onboard/hw-common'
+import type { Subscription } from 'rxjs'
 
 const LEDGER_LIVE_PATH: DerivationPath = "44'/60'"
 const LEDGER_LEGACY_PATH: DerivationPath = "44'/60'/0'"
@@ -326,7 +329,7 @@ const enum LedgerErrorCode {
 
 // Promisified Ledger SDK
 async function getLedgerSdk() {
-  const { DeviceActionStatus, DeviceManagementKitBuilder } = await import('@ledgerhq/device-management-kit')
+  const { DeviceManagementKitBuilder } = await import('@ledgerhq/device-management-kit')
   const { webHidTransportFactory, webHidIdentifier } = await import('@ledgerhq/device-transport-kit-web-hid')
   const { SignerEthBuilder } = await import('@ledgerhq/device-signer-kit-ethereum')
   const { makeError } = await import('ethers')
@@ -339,51 +342,64 @@ async function getLedgerSdk() {
   const sessionId = await dmk.connect({ device })
   const signer = new SignerEthBuilder({ dmk, sessionId }).build()
 
-  function mapOutput<T>(actionState: DeviceActionState<T, unknown, unknown>): T {
-    switch (actionState.status) {
-      case DeviceActionStatus.Completed: {
-        return actionState.output
-      }
-      case DeviceActionStatus.Error: {
-        const errorCode = get(actionState.error, 'originalError.errorCode')
-        const isRejection = errorCode === LedgerErrorCode.REJECTED
-
-        if (!isRejection) {
-          throw actionState.error
-        }
-
-        // Ethers error for user rejection
-        throw makeError('user rejected action', 'ACTION_REJECTED', {
-          action: 'unknown',
-          reason: 'rejected',
-          info: actionState,
-        })
-      }
-      default: {
-        throw new Error(`Device ${actionState.status}`)
-      }
-    }
-  }
-
   return {
     disconnect: async (): Promise<void> => {
       return dmk.disconnect({ sessionId })
     },
     getAddress: async (derivationPath: string): Promise<GetAddressDAOutput> => {
-      const actionState = await lastValueFrom(signer.getAddress(derivationPath, { checkOnDevice: false }).observable)
-      return mapOutput(actionState)
+      return waitForAction(signer.getAddress(derivationPath, { checkOnDevice: false }))
     },
     signMessage: async (derivationPath: string, message: string | Uint8Array): Promise<SignPersonalMessageDAOutput> => {
-      const actionState = await lastValueFrom(signer.signMessage(derivationPath, message).observable)
-      return mapOutput(actionState)
+      return waitForAction(signer.signMessage(derivationPath, message))
     },
     signTransaction: async (derivationPath: string, transaction: Uint8Array): Promise<SignTransactionDAOutput> => {
-      const actionState = await lastValueFrom(signer.signTransaction(derivationPath, transaction).observable)
-      return mapOutput(actionState)
+      return waitForAction(signer.signTransaction(derivationPath, transaction))
     },
     signTypedData: async (derivationPath: string, typedData: TypedData): Promise<SignTypedDataDAOutput> => {
-      const actionState = await lastValueFrom(signer.signTypedData(derivationPath, typedData).observable)
-      return mapOutput(actionState)
+      return waitForAction(signer.signTypedData(derivationPath, typedData))
     },
   }
+}
+
+async function waitForAction<Output, Error extends DmkError, IntermediateValue>({
+  observable,
+}: ExecuteDeviceActionReturnType<Output, Error, IntermediateValue>): Promise<Output> {
+  const { DeviceActionStatus } = await import('@ledgerhq/device-management-kit')
+
+  let subscription: Subscription | undefined
+
+  try {
+    return await new Promise((resolve, reject) => {
+      subscription = observable.subscribe({
+        next: (actionState) => {
+          if (actionState.status === DeviceActionStatus.Completed) {
+            resolve(actionState.output)
+          } else if (actionState.status === DeviceActionStatus.Error) {
+            reject(mapEthersError(actionState.error))
+          } else {
+            // Awaiting user action, e.g. device to be unlocked. We could throw
+            // an explicit error message but we keep the signing request alive
+          }
+        },
+      })
+    })
+  } finally {
+    subscription?.unsubscribe()
+  }
+}
+
+function mapEthersError(error: DmkError) {
+  const isRejection = 'errorCode' in error ? error.errorCode === LedgerErrorCode.REJECTED : false
+
+  if (!isRejection) {
+    return makeError(error.message ?? 'unknown', 'UNKNOWN_ERROR', {
+      info: error,
+    })
+  }
+
+  return makeError('user rejected action', 'ACTION_REJECTED', {
+    action: 'unknown',
+    reason: 'rejected',
+    info: error,
+  })
 }
