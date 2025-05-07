@@ -57,7 +57,7 @@ function ConfirmTxContainer() {
         <TransactionInfo txId={txId} detailedExecutionInfo={detailedExecutionInfo} />
       </ScrollView>
 
-      <View paddingTop="$1" backgroundColor="$background">
+      <View paddingTop="$1">
         <ConfirmTxForm
           hasSigned={Boolean(hasSigned)}
           hasEnoughConfirmations={hasEnoughConfirmations}
