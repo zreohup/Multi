@@ -29,7 +29,7 @@ export function ConfirmTxForm({
   }
 
   if (!canSign) {
-    return <CanNotSign address={activeSigner?.value as Address} txId={txId} />
+    return <CanNotSign address={activeSigner?.value as Address | undefined} txId={txId} />
   }
 
   if (hasEnoughConfirmations) {
