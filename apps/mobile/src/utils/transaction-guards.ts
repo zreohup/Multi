@@ -30,6 +30,7 @@ import type {
   CreationTransactionInfo,
   CustomTransactionInfo,
   MultisigExecutionDetails,
+  NativeStakingWithdrawTransactionInfo,
 } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
 
 import { HistoryTransactionItems, PendingTransactionItems } from '@safe-global/store/gateway/types'
@@ -128,6 +129,12 @@ export const isOrderTxInfo = (value: Transaction['txInfo']): value is SwapOrderT
 
 export const isCancellationTxInfo = (value: Transaction['txInfo']): value is Cancellation => {
   return isCustomTxInfo(value) && value.isCancellation
+}
+
+export const isStakingTxWithdrawInfo = (
+  value: Transaction['txInfo'],
+): value is NativeStakingWithdrawTransactionInfo => {
+  return value.type === TransactionInfoType.NATIVE_STAKING_WITHDRAW
 }
 
 export const isTransactionListItem = (
