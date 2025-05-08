@@ -11,6 +11,7 @@ import {
   isMultiSendTxInfo,
   isOrderTxInfo,
   isSettingsChangeTxInfo,
+  isStakingTxDepositInfo,
   isStakingTxExitInfo,
   isStakingTxWithdrawInfo,
   isTransferTxInfo,
@@ -23,6 +24,7 @@ import { TxOrderCard } from '@/src/components/transactions-list/Card/TxOrderCard
 import { TxCreationCard } from '@/src/components/transactions-list/Card/TxCreationCard'
 import { TxCardPress } from './types'
 import { StakingTxWithdrawCard } from '@/src/components/transactions-list/Card/StakingTxWithdrawCard'
+import { StakingTxDepositCard } from '../transactions-list/Card/StakingTxDepositCard'
 import { StakingTxExitCard } from '../transactions-list/Card/StakingTxExitCard'
 interface TxInfoProps {
   tx: Transaction
@@ -142,6 +144,10 @@ function TxInfoComponent({ tx, bordered, inQueue, onPress }: TxInfoProps) {
         txInfo={txInfo}
       />
     )
+  }
+
+  if (isStakingTxDepositInfo(txInfo)) {
+    return <StakingTxDepositCard info={txInfo} />
   }
 
   if (isStakingTxExitInfo(txInfo)) {
