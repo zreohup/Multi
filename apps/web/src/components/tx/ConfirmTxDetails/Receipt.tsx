@@ -15,7 +15,7 @@ import TxDetailsRow from './TxDetailsRow'
 import NameChip from './NameChip'
 import { isMultisigDetailedExecutionInfo } from '@/utils/transaction-guards'
 
-type TxDetailsProps = {
+type ReceiptProps = {
   safeTxData: SafeTransaction['data']
   txData?: TransactionData
   txDetails?: TransactionDetails
@@ -23,11 +23,11 @@ type TxDetailsProps = {
   withSignatures?: boolean
 }
 
-const ContentWrapper = ({ children }: { children: ReactElement | ReactElement[] }) => (
+const ScrollWrapper = ({ children }: { children: ReactElement | ReactElement[] }) => (
   <Box sx={{ maxHeight: '550px', flex: 1, overflowY: 'auto', px: 2, pt: 1, mt: '0 !important' }}>{children}</Box>
 )
 
-export const Receipt = ({ safeTxData, txData, txDetails, grid, withSignatures = false }: TxDetailsProps) => {
+export const Receipt = ({ safeTxData, txData, txDetails, grid, withSignatures = false }: ReceiptProps) => {
   const safeTxHash = useSafeTxHash({ safeTxData })
   const domainHash = useDomainHash()
   const messageHash = useMessageHash({ safeTxData })
@@ -46,7 +46,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, grid, withSignatures = 
         {
           title: 'Data',
           content: (
-            <ContentWrapper>
+            <ScrollWrapper>
               <Stack spacing={1} divider={<Divider />}>
                 <TxDetailsRow label="To" grid={grid}>
                   <ToWrapper>
@@ -150,13 +150,13 @@ export const Receipt = ({ safeTxData, txData, txDetails, grid, withSignatures = 
                       ),
                   )}
               </Stack>
-            </ContentWrapper>
+            </ScrollWrapper>
           ),
         },
         {
           title: 'Hashes',
           content: (
-            <ContentWrapper>
+            <ScrollWrapper>
               <Stack spacing={1} divider={<Divider />}>
                 {domainHash && (
                   <TxDetailsRow label="Domain hash" grid={grid}>
@@ -182,7 +182,7 @@ export const Receipt = ({ safeTxData, txData, txDetails, grid, withSignatures = 
                   </TxDetailsRow>
                 )}
               </Stack>
-            </ContentWrapper>
+            </ScrollWrapper>
           ),
         },
       ]}
