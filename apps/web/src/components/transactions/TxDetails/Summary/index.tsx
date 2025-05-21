@@ -60,7 +60,9 @@ const Summary = ({
 
   return (
     <>
-      {showMultisend && isMultisend && <Multisend txData={transactionData} compact />}
+      {showMultisend && isMultisend && (
+        <Multisend txData={transactionData} isExecuted={!!txDetails?.executedAt} compact />
+      )}
 
       {txHash && (
         <TxDataRow datatestid="tx-hash" title="Transaction hash">

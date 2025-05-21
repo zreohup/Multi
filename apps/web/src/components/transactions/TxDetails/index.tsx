@@ -150,7 +150,7 @@ const TxDetailsBlock = ({ txSummary, txDetails }: TxDetailsProps): ReactElement 
         {(isMultiSendTxInfo(txDetails.txInfo) || isOrderTxInfo(txDetails.txInfo)) && (
           <div className={css.multiSend}>
             <ErrorBoundary fallback={<div>Error parsing data</div>}>
-              <Multisend txData={txDetails.txData} />
+              <Multisend txData={txDetails.txData} isExecuted={!!txDetails.executedAt} />
             </ErrorBoundary>
           </div>
         )}

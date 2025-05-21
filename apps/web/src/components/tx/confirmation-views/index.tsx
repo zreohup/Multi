@@ -36,6 +36,7 @@ import VaultRedeemConfirmation from '@/features/earn/components/VaultRedeemConfi
 import TxData from '@/components/transactions/TxDetails/TxData'
 import { isMultiSendCalldata } from '@/utils/transaction-calldata'
 import useChainId from '@/hooks/useChainId'
+import { TransactionWarnings } from '../TransactionWarnings'
 import { Box } from '@mui/material'
 import DecodedData from '@/components/transactions/TxDetails/TxData/DecodedData'
 
@@ -119,6 +120,7 @@ const ConfirmationView = ({ safeTx, txPreview, txDetails, ...props }: Confirmati
 
   return (
     <>
+      <TransactionWarnings txData={details?.txData} />
       {ConfirmationViewComponent ||
         (details && showTxDetails && (
           <TxData txData={details?.txData} txInfo={details?.txInfo} txDetails={txDetails} imitation={false} trusted>
