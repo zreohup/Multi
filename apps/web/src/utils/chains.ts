@@ -44,6 +44,7 @@ export enum FEATURES {
   NESTED_SAFES = 'NESTED_SAFES',
   MASS_PAYOUTS = 'MASS_PAYOUTS',
   SPACES = 'SPACES',
+  EARN = 'EARN',
 }
 
 export const FeatureRoutes = {
@@ -53,6 +54,7 @@ export const FeatureRoutes = {
   [AppRoutes.balances.nfts]: FEATURES.ERC721,
   [AppRoutes.settings.notifications]: FEATURES.PUSH_NOTIFICATIONS,
   [AppRoutes.bridge]: FEATURES.BRIDGE,
+  [AppRoutes.earn]: FEATURES.EARN,
 }
 
 export const hasFeature = (chain: ChainInfo, feature: FEATURES): boolean => {

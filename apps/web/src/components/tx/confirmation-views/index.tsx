@@ -12,6 +12,8 @@ import {
   isSafeUpdateTxData,
   isSwapOrderTxInfo,
   isTwapOrderTxInfo,
+  isVaultDepositTxInfo,
+  isVaultRedeemTxInfo,
 } from '@/utils/transaction-guards'
 import { type ReactNode, useContext, useMemo } from 'react'
 import TxData from '@/components/transactions/TxDetails/TxData'
@@ -30,6 +32,8 @@ import UpdateSafe from './UpdateSafe'
 import { MigrateToL2Information } from './MigrateToL2Information'
 import { NestedSafeCreation } from './NestedSafeCreation'
 import { isNestedSafeCreation } from '@/utils/nested-safes'
+import VaultDepositConfirmation from 'src/features/earn/components/VaultDepositConfirmation'
+import VaultRedeemConfirmation from '@/features/earn/components/VaultRedeemConfirmation'
 
 type ConfirmationViewProps = {
   txDetails?: TransactionDetails
@@ -61,6 +65,12 @@ const getConfirmationViewComponent = ({
   if (isSwapOrderTxInfo(txInfo) || isTwapOrderTxInfo(txInfo)) return <SwapOrder txInfo={txInfo} txData={txData} />
 
   if (isAnyStakingTxInfo(txInfo)) return <StakingTx txInfo={txInfo} />
+
+  // @ts-expect-error TODO: Fix these if there is time
+  if (isVaultDepositTxInfo(txInfo)) return <VaultDepositConfirmation txInfo={txInfo} />
+
+  // @ts-expect-error TODO: Fix these if there is time
+  if (isVaultRedeemTxInfo(txInfo)) return <VaultRedeemConfirmation txInfo={txInfo} />
 
   if (isCustomTxInfo(txInfo) && isSafeUpdateTxData(txData)) return <UpdateSafe txData={txData} />
 

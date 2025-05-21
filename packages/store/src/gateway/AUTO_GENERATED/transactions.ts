@@ -599,6 +599,53 @@ export type NativeStakingWithdrawTransactionInfo = {
   tokenInfo: TokenInfo
   validators: string[]
 }
+export type VaultInfo = {
+  address: string
+  name: string
+  description: string
+  dashboardUri?: string | null
+  logoUri: string
+}
+export type VaultExtraReward = {
+  tokenInfo: TokenInfo
+  nrr: number
+  claimable: string
+  claimableNext: string
+}
+export type VaultDepositTransactionInfo = {
+  type: 'VaultDeposit'
+  humanDescription?: string | null
+  value: string
+  baseNrr: number
+  fee: number
+  tokenInfo: TokenInfo
+  vaultInfo: VaultInfo
+  currentReward: string
+  additionalRewardsNrr: number
+  additionalRewards: VaultExtraReward[]
+  expectedMonthlyReward: string
+  expectedAnnualReward: string
+}
+export type VaultRedeemTransactionInfo = {
+  type: 'VaultRedeem'
+  humanDescription?: string | null
+  value: string
+  baseNrr: number
+  fee: number
+  tokenInfo: TokenInfo
+  vaultInfo: VaultInfo
+  currentReward: string
+  additionalRewardsNrr: number
+  additionalRewards: VaultExtraReward[]
+}
+export type Token = {
+  address: string
+  decimals?: number | null
+  logoUri: string
+  name: string
+  symbol: string
+  type: 'ERC721' | 'ERC20' | 'NATIVE_TOKEN' | 'UNKNOWN'
+}
 export type TransactionData = {
   hexData?: string | null
   dataDecoded?: DataDecoded | null
@@ -612,14 +659,6 @@ export type MultisigConfirmationDetails = {
   signer: AddressInfo
   signature?: string | null
   submittedAt: number
-}
-export type Token = {
-  address: string
-  decimals?: number | null
-  logoUri: string
-  name: string
-  symbol: string
-  type: 'ERC721' | 'ERC20' | 'NATIVE_TOKEN' | 'UNKNOWN'
 }
 export type MultisigExecutionDetails = {
   type: 'MULTISIG'
@@ -662,6 +701,8 @@ export type TransactionDetails = {
     | NativeStakingDepositTransactionInfo
     | NativeStakingValidatorsExitTransactionInfo
     | NativeStakingWithdrawTransactionInfo
+    | VaultDepositTransactionInfo
+    | VaultRedeemTransactionInfo
   safeAddress: string
   txId: string
   executedAt?: number | null
@@ -734,6 +775,8 @@ export type Transaction = {
     | NativeStakingDepositTransactionInfo
     | NativeStakingValidatorsExitTransactionInfo
     | NativeStakingWithdrawTransactionInfo
+    | VaultDepositTransactionInfo
+    | VaultRedeemTransactionInfo
   id: string
   txHash?: string | null
   timestamp: number
@@ -792,6 +835,8 @@ export type TransactionPreview = {
     | NativeStakingDepositTransactionInfo
     | NativeStakingValidatorsExitTransactionInfo
     | NativeStakingWithdrawTransactionInfo
+    | VaultDepositTransactionInfo
+    | VaultRedeemTransactionInfo
   txData: TransactionData
 }
 export type PreviewTransactionDto = {

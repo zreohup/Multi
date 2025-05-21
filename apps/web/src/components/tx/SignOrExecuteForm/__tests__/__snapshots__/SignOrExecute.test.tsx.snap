@@ -115,55 +115,59 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                             class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                             data-testid="tx-data-row"
                           >
-                            <div
-                              class="container"
+                            <p
+                              class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
                             >
                               <div
-                                class="MuiBox-root css-1lchl8k"
+                                class="container"
                               >
                                 <div
-                                  class="addressContainer"
+                                  class="MuiBox-root css-1lchl8k"
                                 >
                                   <div
-                                    class="MuiBox-root css-b5p5gz"
+                                    class="addressContainer"
                                   >
+                                    <div
+                                      class="MuiBox-root css-b5p5gz"
+                                    >
+                                      <span
+                                        aria-label="Copy to clipboard"
+                                        class=""
+                                        data-mui-internal-clone-element="true"
+                                        style="cursor: pointer;"
+                                      >
+                                        <span>
+                                          0x0000000000000000000000000000000000000000
+                                        </span>
+                                      </span>
+                                    </div>
                                     <span
                                       aria-label="Copy to clipboard"
                                       class=""
                                       data-mui-internal-clone-element="true"
                                       style="cursor: pointer;"
                                     >
-                                      <span>
-                                        0x0000000000000000000000000000000000000000
-                                      </span>
+                                      <button
+                                        aria-label="Copy to clipboard"
+                                        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
+                                        tabindex="0"
+                                        type="button"
+                                      >
+                                        <mock-icon
+                                          aria-hidden=""
+                                          class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
+                                          data-testid="copy-btn-icon"
+                                          focusable="false"
+                                        />
+                                      </button>
                                     </span>
+                                    <div
+                                      class="MuiBox-root css-yjghm1"
+                                    />
                                   </div>
-                                  <span
-                                    aria-label="Copy to clipboard"
-                                    class=""
-                                    data-mui-internal-clone-element="true"
-                                    style="cursor: pointer;"
-                                  >
-                                    <button
-                                      aria-label="Copy to clipboard"
-                                      class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
-                                      tabindex="0"
-                                      type="button"
-                                    >
-                                      <mock-icon
-                                        aria-hidden=""
-                                        class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
-                                        data-testid="copy-btn-icon"
-                                        focusable="false"
-                                      />
-                                    </button>
-                                  </span>
-                                  <div
-                                    class="MuiBox-root css-yjghm1"
-                                  />
                                 </div>
                               </div>
-                            </div>
+                            </p>
                           </div>
                         </div>
                         <div
@@ -185,9 +189,13 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                             data-testid="tx-data-row"
                           >
                             <p
-                              class="MuiTypography-root MuiTypography-body1 css-mxvcov-MuiTypography-root"
+                              class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
                             >
-                              0x0
+                              <p
+                                class="MuiTypography-root MuiTypography-body1 css-mxvcov-MuiTypography-root"
+                              >
+                                0x0
+                              </p>
                             </p>
                           </div>
                         </div>
@@ -209,33 +217,37 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                             class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                             data-testid="tx-data-row"
                           >
-                            <div
-                              class="encodedData MuiBox-root css-0"
-                              data-testid="tx-hexData"
+                            <p
+                              class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
                             >
-                              <span
-                                aria-label="Copy to clipboard"
-                                class=""
-                                data-mui-internal-clone-element="true"
-                                style="cursor: pointer;"
+                              <div
+                                class="encodedData MuiBox-root css-0"
+                                data-testid="tx-hexData"
                               >
-                                <button
+                                <span
                                   aria-label="Copy to clipboard"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
-                                  tabindex="0"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
+                                  style="cursor: pointer;"
                                 >
-                                  <mock-icon
-                                    aria-hidden=""
-                                    class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
-                                    data-testid="copy-btn-icon"
-                                    focusable="false"
-                                  />
-                                </button>
-                              </span>
-                              0x
-                               
-                            </div>
+                                  <button
+                                    aria-label="Copy to clipboard"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
+                                    tabindex="0"
+                                    type="button"
+                                  >
+                                    <mock-icon
+                                      aria-hidden=""
+                                      class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
+                                      data-testid="copy-btn-icon"
+                                      focusable="false"
+                                    />
+                                  </button>
+                                </span>
+                                0x
+                                 
+                              </div>
+                            </p>
                           </div>
                         </div>
                         <div
@@ -256,7 +268,11 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                             class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                             data-testid="tx-data-row"
                           >
-                            0 (call)
+                            <p
+                              class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
+                            >
+                              0 (call)
+                            </p>
                           </div>
                         </div>
                         <div
@@ -277,7 +293,11 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                             class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                             data-testid="tx-data-row"
                           >
-                            100
+                            <p
+                              class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
+                            >
+                              100
+                            </p>
                           </div>
                         </div>
                         <div
@@ -309,32 +329,36 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                               class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                               data-testid="tx-data-row"
                             >
-                              <div
-                                class="encodedData MuiBox-root css-0"
-                                data-testid="tx-hexData"
+                              <p
+                                class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
                               >
-                                <span
-                                  aria-label="Copy to clipboard"
-                                  class=""
-                                  data-mui-internal-clone-element="true"
-                                  style="cursor: pointer;"
+                                <div
+                                  class="encodedData MuiBox-root css-0"
+                                  data-testid="tx-hexData"
                                 >
-                                  <button
+                                  <span
                                     aria-label="Copy to clipboard"
-                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
-                                    tabindex="0"
-                                    type="button"
+                                    class=""
+                                    data-mui-internal-clone-element="true"
+                                    style="cursor: pointer;"
                                   >
-                                    <mock-icon
-                                      aria-hidden=""
-                                      class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
-                                      data-testid="copy-btn-icon"
-                                      focusable="false"
-                                    />
-                                  </button>
-                                </span>
-                                 
-                              </div>
+                                    <button
+                                      aria-label="Copy to clipboard"
+                                      class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
+                                      tabindex="0"
+                                      type="button"
+                                    >
+                                      <mock-icon
+                                        aria-hidden=""
+                                        class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
+                                        data-testid="copy-btn-icon"
+                                        focusable="false"
+                                      />
+                                    </button>
+                                  </span>
+                                   
+                                </div>
+                              </p>
                             </div>
                           </div>
                           <div
@@ -355,32 +379,36 @@ exports[`SignOrExecute should display a confirmation screen 1`] = `
                               class="MuiGrid-root MuiGrid-item MuiGrid-grid-xs-true css-1vd824g-MuiGrid-root"
                               data-testid="tx-data-row"
                             >
-                              <div
-                                class="encodedData MuiBox-root css-0"
-                                data-testid="tx-hexData"
+                              <p
+                                class="MuiTypography-root MuiTypography-body1 css-v6lhhw-MuiTypography-root"
                               >
-                                <span
-                                  aria-label="Copy to clipboard"
-                                  class=""
-                                  data-mui-internal-clone-element="true"
-                                  style="cursor: pointer;"
+                                <div
+                                  class="encodedData MuiBox-root css-0"
+                                  data-testid="tx-hexData"
                                 >
-                                  <button
+                                  <span
                                     aria-label="Copy to clipboard"
-                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
-                                    tabindex="0"
-                                    type="button"
+                                    class=""
+                                    data-mui-internal-clone-element="true"
+                                    style="cursor: pointer;"
                                   >
-                                    <mock-icon
-                                      aria-hidden=""
-                                      class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
-                                      data-testid="copy-btn-icon"
-                                      focusable="false"
-                                    />
-                                  </button>
-                                </span>
-                                 
-                              </div>
+                                    <button
+                                      aria-label="Copy to clipboard"
+                                      class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall css-xyrzjn-MuiButtonBase-root-MuiIconButton-root"
+                                      tabindex="0"
+                                      type="button"
+                                    >
+                                      <mock-icon
+                                        aria-hidden=""
+                                        class="MuiSvgIcon-root MuiSvgIcon-colorBorder MuiSvgIcon-fontSizeSmall css-gvpe62-MuiSvgIcon-root"
+                                        data-testid="copy-btn-icon"
+                                        focusable="false"
+                                      />
+                                    </button>
+                                  </span>
+                                   
+                                </div>
+                              </p>
                             </div>
                           </div>
                         </div>
