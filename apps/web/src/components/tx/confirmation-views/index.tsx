@@ -49,6 +49,7 @@ type ConfirmationViewProps = {
   isApproval?: boolean
   isCreation?: boolean
   children?: ReactNode
+  withDecodedData?: boolean
 }
 
 const getConfirmationViewComponent = ({
@@ -91,7 +92,13 @@ const getConfirmationViewComponent = ({
   return null
 }
 
-const ConfirmationView = ({ safeTx, txPreview, txDetails, ...props }: ConfirmationViewProps) => {
+const ConfirmationView = ({
+  safeTx,
+  txPreview,
+  txDetails,
+  withDecodedData = true,
+  ...props
+}: ConfirmationViewProps) => {
   const { txFlow } = useContext(TxModalContext)
   const details = txDetails ?? txPreview
   const chainId = useChainId()
@@ -124,17 +131,18 @@ const ConfirmationView = ({ safeTx, txPreview, txDetails, ...props }: Confirmati
   return (
     <>
       <TransactionWarnings txData={details?.txData} />
-      {ConfirmationViewComponent ||
-        (details && showTxDetails && (
-          <TxData txData={details?.txData} txInfo={details?.txInfo} txDetails={txDetails} imitation={false} trusted>
-            <Box ref={decodedDataRef}>
-              <DecodedData
-                txData={details.txData}
-                toInfo={isCustomTxInfo(details.txInfo) ? details.txInfo.to : details.txData?.to}
-              />
-            </Box>
-          </TxData>
-        ))}
+      {withDecodedData &&
+        (ConfirmationViewComponent ||
+          (details && showTxDetails && (
+            <TxData txData={details?.txData} txInfo={details?.txInfo} txDetails={txDetails} imitation={false} trusted>
+              <Box ref={decodedDataRef}>
+                <DecodedData
+                  txData={details.txData}
+                  toInfo={isCustomTxInfo(details.txInfo) ? details.txInfo.to : details.txData?.to}
+                />
+              </Box>
+            </TxData>
+          )))}
 
       {props.children}
 
