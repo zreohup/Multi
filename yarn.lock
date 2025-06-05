@@ -8775,6 +8775,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-masked-view/masked-view@npm:0.3.2":
+  version: 0.3.2
+  resolution: "@react-native-masked-view/masked-view@npm:0.3.2"
+  peerDependencies:
+    react: ">=16"
+    react-native: ">=0.57"
+  checksum: 10/04ffbc01083aa563ca1e2d7ef6759e7b326b8129f5bb1aa5f3142348adab06d5e321a400cf70a5434324dfa906add383f8214640697c48c9e5311b30bfea03d9
+  languageName: node
+  linkType: hard
+
 "@react-native-menu/menu@npm:^1.2.3":
   version: 1.2.3
   resolution: "@react-native-menu/menu@npm:1.2.3"
@@ -9520,6 +9530,7 @@ __metadata:
     "@react-native-firebase/app": "npm:^22.1.0"
     "@react-native-firebase/crashlytics": "npm:^22.1.0"
     "@react-native-firebase/messaging": "npm:^22.1.0"
+    "@react-native-masked-view/masked-view": "npm:0.3.2"
     "@react-native-menu/menu": "npm:^1.2.3"
     "@react-native/babel-preset": "npm:^0.76.2"
     "@react-navigation/material-top-tabs": "npm:^7.2.10"
@@ -9575,6 +9586,8 @@ __metadata:
     expo-constants: "npm:~17.1.5"
     expo-dev-client: "npm:~5.1.8"
     expo-device: "npm:~7.1.4"
+    expo-document-picker: "npm:^13.1.5"
+    expo-file-system: "npm:^18.1.10"
     expo-font: "npm:~13.3.1"
     expo-image: "npm:~2.1.6"
     expo-linear-gradient: "npm:~14.1.4"
@@ -20750,6 +20763,25 @@ __metadata:
   peerDependencies:
     expo: "*"
   checksum: 10/7ac5d0af134c2dff036de55e412d89e2158a31fad76ff751c8de8a08c9411e448498b50e5c92c13bb2a9866f0508b2bc072e8f7fc7d974cdd769940744af8a67
+  languageName: node
+  linkType: hard
+
+"expo-document-picker@npm:^13.1.5":
+  version: 13.1.5
+  resolution: "expo-document-picker@npm:13.1.5"
+  peerDependencies:
+    expo: "*"
+  checksum: 10/a404cd1fbc6f187d94e7ec7bc549beed9231cd7ea91d3cf6cbb16ea202b2c30df9cfb804a834c14cc72d55ff4eec85387dd1647d13557ed1314a52ef204fef24
+  languageName: node
+  linkType: hard
+
+"expo-file-system@npm:^18.1.10":
+  version: 18.1.10
+  resolution: "expo-file-system@npm:18.1.10"
+  peerDependencies:
+    expo: "*"
+    react-native: "*"
+  checksum: 10/b6f848df07ad04791f2ea20438bb9408cebb98a4ffc4e137298d78929df70aa67628a204c52416551359be3179a1e296380e936888a329a39c6f043f02288750
   languageName: node
   linkType: hard
 

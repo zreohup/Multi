@@ -107,6 +107,12 @@ function RootLayout() {
                           <Stack.Screen name="signers" options={{ headerShown: false }} />
                           <Stack.Screen name="import-signers" options={{ headerShown: false }} />
 
+                          <Stack.Screen
+                            name="import-data"
+                            options={{
+                              headerShown: false,
+                            }}
+                          />
                           <Stack.Screen name="app-settings" options={{ headerShown: true, title: '' }} />
                           <Stack.Screen
                             name="conflict-transaction-sheet"
