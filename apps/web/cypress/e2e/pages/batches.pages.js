@@ -32,7 +32,6 @@ const executeOptionsContainer = 'div[role="radiogroup"]'
 const expandedItem = 'div[class*="MuiCollapse-entered"]'
 const collapsedItem = 'div[class*="MuiCollapse-hidden"]'
 
-
 export function addToBatch(EOA, currentNonce, amount) {
   fillTransactionData(EOA, amount)
   setNonceAndProceed(currentNonce)

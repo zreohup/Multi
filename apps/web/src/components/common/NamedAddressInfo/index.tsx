@@ -7,6 +7,7 @@ import { useWeb3ReadOnly } from '@/hooks/wallets/web3'
 import useSafeAddress from '@/hooks/useSafeAddress'
 import { sameAddress } from '@safe-global/utils/utils/addresses'
 import { memo, useMemo } from 'react'
+import { isAddress } from 'ethers'
 
 const useIsUnverifiedContract = (address?: string, error?: Error): boolean => {
   const web3 = useWeb3ReadOnly()
@@ -26,7 +27,7 @@ export function useAddressName(address?: string, name?: string | null, customAva
   const displayName = sameAddress(address, safeAddress) ? 'This Safe Account' : name
 
   const [contract, error] = useAsync(
-    () => (!displayName && address ? getContract(chainId, address) : undefined),
+    () => (!displayName && address && isAddress(address) ? getContract(chainId, address) : undefined),
     [address, chainId, displayName],
     false,
   )

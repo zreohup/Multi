@@ -1,5 +1,5 @@
-import { ConfigPlugin } from '@expo/config-plugins';
-import { NotifeeExpoPluginProps } from './types';
+import { ConfigPlugin } from '@expo/config-plugins'
+import { NotifeeExpoPluginProps } from './types'
 /**
  * Configures Notifee settings for both Android and iOS platforms in an Expo project.
  *
@@ -8,5 +8,5 @@ import { NotifeeExpoPluginProps } from './types';
  *
  * @returns {object} - The updated Expo configuration object.
  */
-declare const withNotifee: ConfigPlugin<NotifeeExpoPluginProps>;
-export default withNotifee;
+declare const withNotifee: ConfigPlugin<NotifeeExpoPluginProps>
+export default withNotifee
