@@ -4,16 +4,20 @@ import { isArrayParameter } from '@/src/utils/transaction-guards'
 import { shortenText } from '@safe-global/utils/utils/formatters'
 import { CircleProps, Text, View } from 'tamagui'
 import { CopyButton } from '@/src/components/CopyButton'
-import { characterDisplayLimit, formatValueTemplate } from './formatters/singleValue'
-import { formatArrayValue } from './formatters/arrayValue'
+import { characterDisplayLimit, formatValueTemplate } from '../formatters/singleValue'
+import { formatArrayValue } from '../formatters/arrayValue'
 import { Badge } from '@/src/components/Badge'
 
 interface formatParametersProps {
-  txData: TransactionDetails['txData']
+  txData?: TransactionDetails['txData']
 }
 const badgeProps: CircleProps = { borderRadius: '$2', paddingHorizontal: '$2', paddingVertical: '$1' }
 
 const formatParameters = ({ txData }: formatParametersProps): ListTableItem[] => {
+  if (!txData) {
+    return []
+  }
+
   const items: ListTableItem[] = [
     {
       label: txData?.dataDecoded?.method ? 'Call' : 'Interacted with',
