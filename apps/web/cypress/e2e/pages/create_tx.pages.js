@@ -1020,3 +1020,18 @@ export function selectComboButtonOption(option) {
   cy.get(comboButton).click()
   cy.get(comboButtonPopover).findByText(comboButtonOptions[option]).click()
 }
+
+export function checkThatComboButtonOptionIsNotPresent(option) {
+  cy.get('body').then(($body) => {
+    if ($body.find(comboButton).length > 0) {
+      cy.get(comboButton).then(($dropdown) => {
+        if ($dropdown.is(':visible')) {
+          cy.get(comboButton).click()
+          cy.get(comboButtonPopover).should('be.visible')
+          cy.get(comboButtonPopover).should('not.contain.text', option)
+          cy.get('body').click(0, 0)
+        }
+      })
+    }
+  })
+}
