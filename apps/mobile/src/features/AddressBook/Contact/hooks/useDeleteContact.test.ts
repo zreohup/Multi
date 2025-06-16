@@ -1,15 +1,11 @@
-import { renderHook, act } from '@testing-library/react-hooks'
+import { renderHook, act } from '@/src/tests/test-utils'
 import { Alert } from 'react-native'
 import { useDeleteContact } from './useDeleteContact'
 import { removeContact, type Contact } from '@/src/store/addressBookSlice'
 import { router } from 'expo-router'
 
 // Mock dependencies
-jest.mock('react-native', () => ({
-  Alert: {
-    alert: jest.fn(),
-  },
-}))
+jest.mock('react-native/Libraries/Alert/Alert')
 
 jest.mock('expo-router', () => ({
   router: {
@@ -19,6 +15,7 @@ jest.mock('expo-router', () => ({
 
 jest.mock('@/src/store/hooks', () => ({
   useAppDispatch: () => mockDispatch,
+  useAppSelector: jest.fn(),
 }))
 
 jest.mock('@/src/store/addressBookSlice', () => ({
