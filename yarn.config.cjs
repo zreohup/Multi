@@ -1,7 +1,7 @@
 /** @type {import('@yarnpkg/types')} */
 const { defineConfig } = require('@yarnpkg/types')
 
-const DEPS_TO_CHECK = ['typescript', 'react']
+const DEPS_TO_CHECK = ['typescript', 'react', 'redux', 'react-redux', '@reduxjs/toolkit']
 
 /**
  * Detect and report different versions of specified dependencies across workspaces
