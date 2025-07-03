@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container } from '../Container'
-import { Text, Theme, ThemeName, View } from 'tamagui'
+import { Text, Theme, ThemeName, View, YStackProps } from 'tamagui'
 import { IconProps, SafeFontIcon } from '../SafeFontIcon/SafeFontIcon'
 import { ellipsis } from '@/src/utils/formatters'
 import { isMultisigExecutionInfo } from '@/src/utils/transaction-guards'
@@ -24,6 +24,7 @@ interface SafeListItemProps {
   themeName?: ThemeName
   onPress?: () => void
   tag?: string
+  paddingVertical?: YStackProps['paddingVertical']
 }
 
 export function SafeListItem({
@@ -41,6 +42,7 @@ export function SafeListItem({
   themeName,
   onPress,
   tag,
+  paddingVertical = '$4',
 }: SafeListItemProps) {
   // TODO: Replace this with proposedByDelegate once EN-149 is implemented
   const isProposedTx = isMultisigExecutionInfo(executionInfo) ? executionInfo.confirmationsSubmitted === 0 : false
@@ -57,6 +59,7 @@ export function SafeListItem({
       flexWrap="wrap"
       flexDirection="row"
       justifyContent="space-between"
+      paddingVertical={paddingVertical}
     >
       <View flexDirection="row" maxWidth={rightNode ? '55%' : '100%'} alignItems="center" gap={12}>
         {leftNode}
