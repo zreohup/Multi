@@ -45,14 +45,6 @@ export const transformSafeData = (safe: NonNullable<LegacyDataStructure['safes']
   }
 }
 
-export const transformContactData = (contact: NonNullable<LegacyDataStructure['contacts']>[0]): Contact => {
-  return {
-    value: contact.address,
-    name: contact.name,
-    chainIds: [],
-  }
-}
-
 export const transformKeyData = (
   key: NonNullable<LegacyDataStructure['keys']>[0],
 ): { address: string; privateKey: string; signerInfo: AddressInfo } => {
@@ -68,6 +60,32 @@ export const transformKeyData = (
     privateKey: hexPrivateKey,
     signerInfo,
   }
+}
+
+export const transformContactsData = (contacts: NonNullable<LegacyDataStructure['contacts']>): Contact[] => {
+  // Group contacts by address to handle same address on multiple chains
+  const contactsMap = new Map<string, Contact>()
+
+  for (const contact of contacts) {
+    const address = contact.address.toLowerCase() // Normalize address for consistency
+
+    if (contactsMap.has(address)) {
+      // Address already exists, add the chainId if not already present
+      const existingContact = contactsMap.get(address)
+      if (existingContact && !existingContact.chainIds.includes(contact.chain)) {
+        existingContact.chainIds.push(contact.chain)
+      }
+    } else {
+      // New address, create new contact
+      contactsMap.set(address, {
+        value: contact.address, // Keep original casing
+        name: contact.name,
+        chainIds: [contact.chain],
+      })
+    }
+  }
+
+  return Array.from(contactsMap.values())
 }
 
 export const storeSafes = (data: LegacyDataStructure, dispatch: AppDispatch): void => {
@@ -123,8 +141,8 @@ export const storeContacts = (data: LegacyDataStructure, dispatch: AppDispatch):
     return
   }
 
-  const contactsToAdd: Contact[] = data.contacts.map(transformContactData)
+  const contactsToAdd = transformContactsData(data.contacts)
 
   dispatch(addContacts(contactsToAdd))
-  Logger.info(`Imported ${data.contacts.length} contacts`)
+  Logger.info(`Imported ${contactsToAdd.length} contacts from ${data.contacts.length} contact entries`)
 }
