@@ -3,8 +3,8 @@ import {
   transformKeyData,
   transformContactsData,
   storeSafes,
-  storeKeys,
   storeContacts,
+  storeKeysWithValidation,
   LegacyDataStructure,
 } from './transforms'
 import { addSafe } from '@/src/store/safesSlice'
@@ -24,7 +24,6 @@ describe('Data import helpers', () => {
   beforeEach(() => {
     jest.clearAllMocks()
   })
-
   describe('Pure transformation functions', () => {
     it('transforms safe data correctly', () => {
       const safeData = {
@@ -190,24 +189,62 @@ describe('Data import helpers', () => {
       expect(dispatch).toHaveBeenCalledWith(addContact({ value: '0x1', name: 'Test Safe', chainIds: [] }))
     })
 
-    it('stores keys and dispatches addSignerWithEffects', async () => {
+    it('storeKeysWithValidation only imports keys that are safe owners', async () => {
       const dispatch = jest.fn()
-      const key = Buffer.from('abcd', 'hex').toString('base64')
+      const updateNotImportedKeys = jest.fn()
+      const key1 = Buffer.from('abcd', 'hex').toString('base64')
+      const key2 = Buffer.from('efgh', 'hex').toString('base64')
+
       const data: LegacyDataStructure = {
         keys: [
           {
             address: '0x1',
-            name: 'Owner',
-            key,
+            name: 'Owner Key',
+            key: key1,
+          },
+          {
+            address: '0x2',
+            name: 'Non-Owner Key',
+            key: key2,
           },
         ],
       }
 
-      await storeKeys(data, dispatch)
+      // Set of owners - only 0x1 is an owner
+      const allOwners = new Set(['0x1'])
 
+      await storeKeysWithValidation(data, allOwners, dispatch, updateNotImportedKeys)
+
+      // Should import the owner key
       expect(storePrivateKey).toHaveBeenCalledWith('0x1', '0xabcd')
-      expect(addSignerWithEffects).toHaveBeenCalledWith({ value: '0x1', name: 'Owner' })
+      expect(addSignerWithEffects).toHaveBeenCalledWith({ value: '0x1', name: 'Owner Key' })
       expect(dispatch).toHaveBeenCalledWith({ type: 'addSignerWithEffects' })
+
+      // Should not import the non-owner key
+      expect(storePrivateKey).not.toHaveBeenCalledWith('0x2', '0xefgh')
+
+      // Should update not imported keys
+      expect(updateNotImportedKeys).toHaveBeenCalledWith([
+        {
+          address: '0x2',
+          name: 'Non-Owner Key',
+          reason: 'Not an owner of any imported safe',
+        },
+      ])
+    })
+
+    it('storeKeysWithValidation handles empty keys array', async () => {
+      const dispatch = jest.fn()
+      const updateNotImportedKeys = jest.fn()
+      const data: LegacyDataStructure = {}
+      const allOwners = new Set(['0x1'])
+
+      await storeKeysWithValidation(data, allOwners, dispatch, updateNotImportedKeys)
+
+      expect(storePrivateKey).not.toHaveBeenCalled()
+      expect(addSignerWithEffects).not.toHaveBeenCalled()
+      expect(dispatch).not.toHaveBeenCalled()
+      expect(updateNotImportedKeys).not.toHaveBeenCalled()
     })
 
     it('dispatches addContacts with transformed contacts', () => {

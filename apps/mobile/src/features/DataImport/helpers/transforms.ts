@@ -19,13 +19,22 @@ export interface LegacyDataStructure {
 }
 
 import { AppDispatch } from '@/src/store'
-import { addSafe } from '@/src/store/safesSlice'
-import { addSignerWithEffects } from '@/src/store/signersSlice'
-import { addContact, addContacts, Contact } from '@/src/store/addressBookSlice'
-import { storePrivateKey } from '@/src/hooks/useSign/useSign'
+import { addSafe as _addSafe } from '@/src/store/safesSlice'
+import { addSignerWithEffects as _addSignerWithEffects } from '@/src/store/signersSlice'
+import { addContact as _addContact, addContacts, Contact } from '@/src/store/addressBookSlice'
+import { storePrivateKey as _storePrivateKey } from '@/src/hooks/useSign/useSign'
 import { SafeOverview } from '@safe-global/store/gateway/AUTO_GENERATED/safes'
 import { AddressInfo } from '@safe-global/store/gateway/AUTO_GENERATED/transactions'
+import { additionalSafesRtkApi } from '@safe-global/store/gateway/safes'
+import { addSignerWithEffects } from '@/src/store/signersSlice'
+import { storePrivateKey } from '@/src/hooks/useSign/useSign'
 import Logger from '@/src/utils/logger'
+
+export interface NotImportedKey {
+  address: string
+  name: string
+  reason: string
+}
 
 export const transformSafeData = (safe: NonNullable<LegacyDataStructure['safes']>[0]): SafeOverview => {
   return {
@@ -93,18 +102,20 @@ export const storeSafes = (data: LegacyDataStructure, dispatch: AppDispatch): vo
     return
   }
 
+  console.log('data.safes', data.safes)
+
   for (const safe of data.safes) {
     const safeOverview = transformSafeData(safe)
 
     dispatch(
-      addSafe({
+      _addSafe({
         address: safe.address as `0x${string}`,
         info: { [safe.chain]: safeOverview },
       }),
     )
 
     dispatch(
-      addContact({
+      _addContact({
         value: safe.address,
         name: safe.name,
         chainIds: [],
@@ -113,27 +124,6 @@ export const storeSafes = (data: LegacyDataStructure, dispatch: AppDispatch): vo
   }
 
   Logger.info(`Imported ${data.safes.length} safes`)
-}
-
-export const storeKeys = async (data: LegacyDataStructure, dispatch: AppDispatch): Promise<void> => {
-  if (!data.keys) {
-    return
-  }
-
-  for (const key of data.keys) {
-    try {
-      const { address, privateKey, signerInfo } = transformKeyData(key)
-
-      await storePrivateKey(address, privateKey)
-      dispatch(addSignerWithEffects(signerInfo))
-
-      Logger.info(`Imported signer: ${address}`)
-    } catch (error) {
-      Logger.error('Failed to import signer during data import', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      })
-    }
-  }
 }
 
 export const storeContacts = (data: LegacyDataStructure, dispatch: AppDispatch): void => {
@@ -145,4 +135,140 @@ export const storeContacts = (data: LegacyDataStructure, dispatch: AppDispatch):
 
   dispatch(addContacts(contactsToAdd))
   Logger.info(`Imported ${contactsToAdd.length} contacts from ${data.contacts.length} contact entries`)
+}
+
+export const storeKeysWithValidation = async (
+  data: LegacyDataStructure,
+  allOwners: Set<string>,
+  dispatch: AppDispatch,
+  updateNotImportedKeys: (keys: NotImportedKey[]) => void,
+): Promise<void> => {
+  if (!data.keys) {
+    return
+  }
+
+  const notImportedKeys: NotImportedKey[] = []
+  let importedCount = 0
+
+  Logger.info(`Validating ${data.keys.length} keys against ${allOwners.size} safe owners`)
+
+  for (const key of data.keys) {
+    const keyAddress = key.address.toLowerCase()
+
+    if (!allOwners.has(keyAddress)) {
+      // Key is not an owner of any safe, don't import it
+      notImportedKeys.push({
+        address: key.address,
+        name: key.name || 'Unknown',
+        reason: 'Not an owner of any imported safe',
+      })
+
+      Logger.info(`Key ${key.address} not imported - not an owner of any safe`)
+      continue
+    }
+
+    // Key is an owner, proceed with import
+    try {
+      const { address, privateKey, signerInfo } = transformKeyData(key)
+
+      await storePrivateKey(address, privateKey)
+      dispatch(addSignerWithEffects(signerInfo))
+
+      importedCount++
+      Logger.info(`Key ${key.address} successfully imported`)
+    } catch (error) {
+      Logger.error('Failed to import validated key', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        address: key.address,
+      })
+
+      notImportedKeys.push({
+        address: key.address,
+        name: key.name || 'Unknown',
+        reason: 'Import failed due to technical error',
+      })
+    }
+  }
+
+  // Update the context with not imported keys
+  updateNotImportedKeys(notImportedKeys)
+
+  Logger.info(`Import validation complete: ${importedCount} keys imported, ${notImportedKeys.length} keys not imported`)
+}
+
+interface SafeInfo {
+  address: string
+  chainId: string
+}
+
+// Function to create delay for throttling
+const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+
+// Function to chunk array into smaller arrays
+const chunkArray = <T>(array: T[], size: number): T[][] => {
+  const chunks: T[][] = []
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size))
+  }
+  return chunks
+}
+
+export const fetchSafeOwnersInBatches = async (
+  safes: SafeInfo[],
+  currency = 'USD',
+  dispatch: AppDispatch,
+): Promise<Set<string>> => {
+  if (safes.length === 0) {
+    return new Set()
+  }
+
+  const allOwners = new Set<string>()
+  const BATCH_SIZE = 10
+  const THROTTLE_DELAY = 300 // 300ms between requests
+
+  // Create safe IDs in the format expected by the API
+  const safeIds = safes.map((safe) => `${safe.chainId}:${safe.address}`)
+  const chunks = chunkArray(safeIds, BATCH_SIZE)
+
+  Logger.info(`Fetching safe information for ${safes.length} safes in ${chunks.length} batches`)
+
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i]
+    Logger.info(`Processing batch ${i + 1}/${chunks.length} with ${chunk.length} safes`)
+
+    try {
+      // Make the API call for this batch using the endpoint directly
+      const response = await dispatch(
+        additionalSafesRtkApi.endpoints.safesGetOverviewForMany.initiate({
+          safes: chunk,
+          currency,
+          trusted: true,
+          excludeSpam: true,
+        }),
+      ).unwrap()
+
+      // Extract owners from the response
+      for (const safeOverview of response) {
+        if (safeOverview.owners) {
+          safeOverview.owners.forEach((owner: AddressInfo) => {
+            allOwners.add(owner.value.toLowerCase())
+          })
+        }
+      }
+
+      // Add throttling delay between requests (except for the last batch)
+      if (i < chunks.length - 1) {
+        await delay(THROTTLE_DELAY)
+      }
+    } catch (error) {
+      Logger.error(`Failed to fetch safe information for batch ${i + 1}`, {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        chunk,
+      })
+      // Continue with next batch even if one fails
+    }
+  }
+
+  Logger.info(`Extracted ${allOwners.size} unique owners from ${safes.length} safes`)
+  return allOwners
 }
