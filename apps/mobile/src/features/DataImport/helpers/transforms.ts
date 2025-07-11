@@ -142,6 +142,14 @@ export const storeKeysWithValidation = async (
   allOwners: Set<string>,
   dispatch: AppDispatch,
   updateNotImportedKeys: (keys: NotImportedKey[]) => void,
+  createDelegate: (
+    ownerPrivateKey: string,
+    safe?: string | null,
+  ) => Promise<{
+    success: boolean
+    delegateAddress?: string
+    error?: string
+  }>,
 ): Promise<void> => {
   if (!data.keys) {
     return
@@ -149,10 +157,12 @@ export const storeKeysWithValidation = async (
 
   const notImportedKeys: NotImportedKey[] = []
   let importedCount = 0
+  const KEY_IMPORT_DELAY = 1000 // 1 second delay between key imports to throttle delegate creation
 
   Logger.info(`Validating ${data.keys.length} keys against ${allOwners.size} safe owners`)
 
-  for (const key of data.keys) {
+  for (let i = 0; i < data.keys.length; i++) {
+    const key = data.keys[i]
     const keyAddress = key.address.toLowerCase()
 
     if (!allOwners.has(keyAddress)) {
@@ -174,8 +184,36 @@ export const storeKeysWithValidation = async (
       await storePrivateKey(address, privateKey)
       dispatch(addSignerWithEffects(signerInfo))
 
+      // Create delegate for this owner
+      try {
+        // Pass null as safe address to create a delegate for the chain, not for a specific safe
+        const delegateResult = await createDelegate(privateKey, null)
+
+        if (!delegateResult.success) {
+          Logger.error('Failed to create delegate during data import', {
+            address: key.address,
+            error: delegateResult.error,
+          })
+        } else {
+          Logger.info(`Delegate created successfully for key ${key.address}`)
+        }
+      } catch (delegateError) {
+        // Log the error but continue with the import - delegate creation failure shouldn't prevent key import
+        Logger.error('Error creating delegate during data import', {
+          address: key.address,
+          error: delegateError instanceof Error ? delegateError.message : 'Unknown error',
+        })
+      }
+
       importedCount++
       Logger.info(`Key ${key.address} successfully imported`)
+
+      // Add delay between key imports to throttle delegate creation requests
+      // Skip delay for the last key to avoid unnecessary waiting
+      if (i < data.keys.length - 1) {
+        Logger.info(`Waiting ${KEY_IMPORT_DELAY}ms before processing next key...`)
+        await delay(KEY_IMPORT_DELAY)
+      }
     } catch (error) {
       Logger.error('Failed to import validated key', {
         error: error instanceof Error ? error.message : 'Unknown error',

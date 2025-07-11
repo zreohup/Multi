@@ -3,6 +3,7 @@ import { useRouter } from 'expo-router'
 import { useDataImportContext } from './context/DataImportProvider'
 import { useAppDispatch, useAppSelector } from '@/src/store/hooks'
 import { selectCurrency } from '@/src/store/settingsSlice'
+import useDelegate from '@/src/hooks/useDelegate'
 import Logger from '@/src/utils/logger'
 import {
   storeSafes,
@@ -18,6 +19,7 @@ export const ImportProgressScreen = () => {
   const { importedData, updateNotImportedKeys } = useDataImportContext()
   const dispatch = useAppDispatch()
   const currency = useAppSelector(selectCurrency)
+  const { createDelegate } = useDelegate()
 
   const [progress, setProgress] = useState(0)
   const hasImportStarted = useRef(false)
@@ -59,9 +61,9 @@ export const ImportProgressScreen = () => {
         storeSafes(data, dispatch)
         setProgress(50)
 
-        // Step 3: Import Signers/Private Keys with validation
-        Logger.info('Starting key import with validation...')
-        await storeKeysWithValidation(data, allOwners, dispatch, updateNotImportedKeys)
+        // Step 3: Import Signers/Private Keys with validation and delegate creation
+        Logger.info('Starting key import with validation and delegate creation...')
+        await storeKeysWithValidation(data, allOwners, dispatch, updateNotImportedKeys, createDelegate)
         setProgress(75)
 
         // Step 4: Import Address Book/Contacts
@@ -84,7 +86,7 @@ export const ImportProgressScreen = () => {
     }
 
     performImport()
-  }, [importedData, dispatch, router, currency])
+  }, [importedData, dispatch, router, currency, createDelegate])
 
   return <ImportProgressScreenView progress={progress} />
 }
