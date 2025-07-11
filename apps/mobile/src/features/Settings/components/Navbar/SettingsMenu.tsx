@@ -47,6 +47,7 @@ export const SettingsMenu = ({ safeAddress }: Props) => {
           alignItems: 'center',
           justifyContent: 'flex-end',
           gap: 10,
+          zIndex: 1,
         }}
       >
         <Pressable
