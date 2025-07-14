@@ -61,7 +61,6 @@ describe('ImportProgressScreen', () => {
     // Mock transforms functions
     jest.mocked(transforms.fetchSafeOwnersInBatches).mockResolvedValue(new Set(['0x2']))
     jest.mocked(transforms.storeKeysWithValidation).mockResolvedValue(undefined)
-    jest.mocked(transforms.storeSafes).mockImplementation(jest.fn())
     jest.mocked(transforms.storeContacts).mockImplementation(jest.fn())
   })
 

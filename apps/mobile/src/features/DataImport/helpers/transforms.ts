@@ -97,23 +97,136 @@ export const transformContactsData = (contacts: NonNullable<LegacyDataStructure[
   return Array.from(contactsMap.values())
 }
 
-export const storeSafes = (data: LegacyDataStructure, dispatch: AppDispatch): void => {
-  if (!data.safes) {
-    return
+interface SafeInfo {
+  address: string
+  chainId: string
+}
+
+// Function to create delay for throttling
+const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
+
+// Function to chunk array into smaller arrays
+const chunkArray = <T>(array: T[], size: number): T[][] => {
+  const chunks: T[][] = []
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size))
+  }
+  return chunks
+}
+
+export type ImportProgressCallback = (progress: number, message: string) => void
+
+// Constants for import delays
+const KEY_IMPORT_DELAY = 1000 // 1 second delay between key imports to throttle delegate creation
+
+/**
+ * Adds safe addresses to the Redux state with minimal data, then fetches complete SafeOverview data.
+ * This two-step process is required because the safesSlice extraReducer only updates existing safes.
+ */
+export const fetchAndStoreSafeOverviews = async (
+  safes: SafeInfo[],
+  currency = 'USD',
+  dispatch: AppDispatch,
+  progressCallback?: ImportProgressCallback,
+): Promise<Set<string>> => {
+  if (safes.length === 0) {
+    return new Set()
   }
 
-  console.log('data.safes', data.safes)
+  // Step 1: Add safe addresses to state with minimal data so extraReducer can update them
+  Logger.info(`Pre-populating ${safes.length} safe addresses in Redux state`)
+  progressCallback?.(0, 'Preparing safes for data fetch...')
 
-  for (const safe of data.safes) {
-    const safeOverview = transformSafeData(safe)
+  for (const safe of safes) {
+    // Add safe with minimal data - the extraReducer will update this with full data
+    const minimalSafeOverview: SafeOverview = {
+      address: { value: safe.address, name: null },
+      chainId: safe.chainId,
+      threshold: 1,
+      owners: [],
+      fiatTotal: '0',
+      queued: 0,
+      awaitingConfirmation: null,
+    }
 
     dispatch(
       _addSafe({
         address: safe.address as `0x${string}`,
-        info: { [safe.chain]: safeOverview },
+        info: { [safe.chainId]: minimalSafeOverview },
       }),
     )
+  }
 
+  // Step 2: Fetch complete SafeOverview data - this will trigger the extraReducer to update the state
+  const allOwners = new Set<string>()
+  const BATCH_SIZE = 10
+  const THROTTLE_DELAY = 300 // 300ms between requests
+
+  // Create safe IDs in the format expected by the API
+  const safeIds = safes.map((safe) => `${safe.chainId}:${safe.address}`)
+  const chunks = chunkArray(safeIds, BATCH_SIZE)
+
+  Logger.info(`Fetching complete SafeOverview data for ${safes.length} safes in ${chunks.length} batches`)
+
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i]
+    const batchProgress = Math.round((i / chunks.length) * 100)
+
+    Logger.info(`Processing batch ${i + 1}/${chunks.length} with ${chunk.length} safes`)
+    progressCallback?.(batchProgress, `Fetching safe data (batch ${i + 1}/${chunks.length})`)
+
+    try {
+      // Make the API call for this batch - this will trigger the extraReducer to update the state
+      const response = await dispatch(
+        additionalSafesRtkApi.endpoints.safesGetOverviewForMany.initiate({
+          safes: chunk,
+          currency,
+          trusted: true,
+          excludeSpam: true,
+        }),
+      ).unwrap()
+
+      // Extract owners from the response
+      for (const safeOverview of response) {
+        if (safeOverview.owners) {
+          safeOverview.owners.forEach((owner: AddressInfo) => {
+            allOwners.add(owner.value.toLowerCase())
+          })
+        }
+      }
+
+      // Add throttling delay between requests (except for the last batch)
+      if (i < chunks.length - 1) {
+        await delay(THROTTLE_DELAY)
+      }
+    } catch (error) {
+      Logger.error(`Failed to fetch safe information for batch ${i + 1}`, {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        chunk,
+      })
+      // Continue with next batch even if one fails
+    }
+  }
+
+  progressCallback?.(100, `Fetched complete data for ${safes.length} safes`)
+  Logger.info(`Extracted ${allOwners.size} unique owners from ${safes.length} safes`)
+  Logger.info(`Complete SafeOverview data has been stored in Redux store via RTK query extraReducer`)
+  return allOwners
+}
+
+/**
+ * Stores safe addresses as contacts in the address book.
+ * This function only handles contact creation and does NOT create SafeOverview data,
+ * as that should be handled by fetchAndStoreSafeOverviews.
+ */
+export const storeSafeContacts = (data: LegacyDataStructure, dispatch: AppDispatch): void => {
+  if (!data.safes) {
+    return
+  }
+
+  Logger.info(`Storing ${data.safes.length} safe addresses as contacts`)
+
+  for (const safe of data.safes) {
     dispatch(
       _addContact({
         value: safe.address,
@@ -123,7 +236,7 @@ export const storeSafes = (data: LegacyDataStructure, dispatch: AppDispatch): vo
     )
   }
 
-  Logger.info(`Imported ${data.safes.length} safes`)
+  Logger.info(`Stored ${data.safes.length} safe contacts`)
 }
 
 export const storeContacts = (data: LegacyDataStructure, dispatch: AppDispatch): void => {
@@ -150,6 +263,7 @@ export const storeKeysWithValidation = async (
     delegateAddress?: string
     error?: string
   }>,
+  progressCallback?: ImportProgressCallback,
 ): Promise<void> => {
   if (!data.keys) {
     return
@@ -157,13 +271,15 @@ export const storeKeysWithValidation = async (
 
   const notImportedKeys: NotImportedKey[] = []
   let importedCount = 0
-  const KEY_IMPORT_DELAY = 1000 // 1 second delay between key imports to throttle delegate creation
 
   Logger.info(`Validating ${data.keys.length} keys against ${allOwners.size} safe owners`)
 
   for (let i = 0; i < data.keys.length; i++) {
     const key = data.keys[i]
     const keyAddress = key.address.toLowerCase()
+    const keyProgress = Math.round((i / data.keys.length) * 100)
+
+    progressCallback?.(keyProgress, `Processing key ${i + 1}/${data.keys.length}`)
 
     if (!allOwners.has(keyAddress)) {
       // Key is not an owner of any safe, don't import it
@@ -186,6 +302,8 @@ export const storeKeysWithValidation = async (
 
       // Create delegate for this owner
       try {
+        progressCallback?.(keyProgress, `Creating delegate for ${key.name || key.address}`)
+
         // Pass null as safe address to create a delegate for the chain, not for a specific safe
         const delegateResult = await createDelegate(privateKey, null)
 
@@ -231,82 +349,9 @@ export const storeKeysWithValidation = async (
   // Update the context with not imported keys
   updateNotImportedKeys(notImportedKeys)
 
+  progressCallback?.(100, `Completed: ${importedCount} keys imported`)
   Logger.info(`Import validation complete: ${importedCount} keys imported, ${notImportedKeys.length} keys not imported`)
 }
 
-interface SafeInfo {
-  address: string
-  chainId: string
-}
-
-// Function to create delay for throttling
-const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms))
-
-// Function to chunk array into smaller arrays
-const chunkArray = <T>(array: T[], size: number): T[][] => {
-  const chunks: T[][] = []
-  for (let i = 0; i < array.length; i += size) {
-    chunks.push(array.slice(i, i + size))
-  }
-  return chunks
-}
-
-export const fetchSafeOwnersInBatches = async (
-  safes: SafeInfo[],
-  currency = 'USD',
-  dispatch: AppDispatch,
-): Promise<Set<string>> => {
-  if (safes.length === 0) {
-    return new Set()
-  }
-
-  const allOwners = new Set<string>()
-  const BATCH_SIZE = 10
-  const THROTTLE_DELAY = 300 // 300ms between requests
-
-  // Create safe IDs in the format expected by the API
-  const safeIds = safes.map((safe) => `${safe.chainId}:${safe.address}`)
-  const chunks = chunkArray(safeIds, BATCH_SIZE)
-
-  Logger.info(`Fetching safe information for ${safes.length} safes in ${chunks.length} batches`)
-
-  for (let i = 0; i < chunks.length; i++) {
-    const chunk = chunks[i]
-    Logger.info(`Processing batch ${i + 1}/${chunks.length} with ${chunk.length} safes`)
-
-    try {
-      // Make the API call for this batch using the endpoint directly
-      const response = await dispatch(
-        additionalSafesRtkApi.endpoints.safesGetOverviewForMany.initiate({
-          safes: chunk,
-          currency,
-          trusted: true,
-          excludeSpam: true,
-        }),
-      ).unwrap()
-
-      // Extract owners from the response
-      for (const safeOverview of response) {
-        if (safeOverview.owners) {
-          safeOverview.owners.forEach((owner: AddressInfo) => {
-            allOwners.add(owner.value.toLowerCase())
-          })
-        }
-      }
-
-      // Add throttling delay between requests (except for the last batch)
-      if (i < chunks.length - 1) {
-        await delay(THROTTLE_DELAY)
-      }
-    } catch (error) {
-      Logger.error(`Failed to fetch safe information for batch ${i + 1}`, {
-        error: error instanceof Error ? error.message : 'Unknown error',
-        chunk,
-      })
-      // Continue with next batch even if one fails
-    }
-  }
-
-  Logger.info(`Extracted ${allOwners.size} unique owners from ${safes.length} safes`)
-  return allOwners
-}
+// Legacy function - keeping for backward compatibility
+export const fetchSafeOwnersInBatches = fetchAndStoreSafeOverviews
