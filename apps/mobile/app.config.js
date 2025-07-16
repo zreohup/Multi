@@ -6,12 +6,12 @@ const appleDevTeamId = 'MXRS32BBL4'
 const config = {
   name: IS_DEV ? 'Safe{Wallet} MVP - Development' : 'Safe{Wallet} MVP',
   slug: 'safe-mobileapp',
-  owner: 'safeglobal',
+  owner: 'teslk',
   version: '1.0.1',
   extra: {
     storybookEnabled: process.env.STORYBOOK_ENABLED,
     eas: {
-      projectId: '27e9e907-8675-474d-99ee-6c94e7b83a5c',
+      projectId: 'ab6e02e9-81a4-4228-b274-03d29b07d0d0',
     },
   },
   orientation: 'portrait',
@@ -46,7 +46,7 @@ const config = {
       monochromeImage: './assets/images/monochrome-icon.png',
     },
     package: IS_DEV ? 'global.safe.mobileapp.dev' : 'global.safe.mobileapp',
-    googleServicesFile: IS_DEV ? process.env.GOOGLE_SERVICES_JSON_DEV : process.env.GOOGLE_SERVICES_JSON,
+    googleServicesFile: './google-services.json',
     permissions: [
       'android.permission.CAMERA',
       'android.permission.POST_NOTIFICATIONS',
